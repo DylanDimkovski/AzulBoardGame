@@ -12,8 +12,7 @@ public:
     void printRound(bool playerTurn, Factory factories[]);
     void printPlayer(Player player);
     void printCredits();
-    // void printSuccess();
-    // void printFailure();
+    void printMessage(std::string message);
 };
 
 #endif // !MENU_H

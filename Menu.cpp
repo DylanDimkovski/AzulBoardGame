@@ -36,9 +36,10 @@ void Menu::printCredits()
     std::cout << "Email: <ID>@student.rmit.edu.au" << std::endl
               << std::endl;
 }
-// void Menu::printSuccess()
-// {
-// }
-// void Menu::printMessage(String message)
-// {
-// }
+
+void Menu::printMessage(std::string message)
+{
+    std::cout << std::endl
+              << message << std::endl
+              << std::endl;
+}
