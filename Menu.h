@@ -11,6 +11,7 @@ public:
     std::string getInput();
     void printRound(bool playerTurn, Factory factories[]);
     void printPlayer(Player player);
+    void printCredits();
     // void printSuccess();
     // void printFailure();
 };
