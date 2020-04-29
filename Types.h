@@ -6,6 +6,8 @@
 #define BROKEN_TILES_LENGTH 7
 #define NUMBER_OF_PLAYERS 2
 #define NUMBER_OF_EACH_COLOUR 20
+#define FACTORY_SIZE 4
+#define NUM_FACTORIES 5
 
 enum TileType
 {
