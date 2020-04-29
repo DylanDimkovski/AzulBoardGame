@@ -9,4 +9,15 @@
 #define FACTORY_SIZE 4
 #define NUM_FACTORIES 5
 
+enum TileType
+{
+    RED,
+    YELLOW,
+    DARKBLUE,
+    LIGTHBLUE,
+    BLACK,
+    FIRSTPLAYER,
+    NOTILE
+};
+
 #endif
