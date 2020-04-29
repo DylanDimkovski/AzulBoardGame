@@ -12,6 +12,8 @@ void Menu::printMenu()
 std::string Menu::getInput()
 {
     std::string input;
+    std::cout << std::endl
+              << "> ";
     std::cin >> input;
     return input;
 }
