@@ -22,10 +22,10 @@ int *Factory::empty()
     int *arrPtr = array;
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
-        if (tiles[i] != 0)
+        if (tiles[i] != NOTILE)
         {
             array[i] = tiles[i];
-            tiles[i] = 0;
+            tiles[i] = NOTILE;
         }
     }
     return arrPtr;
@@ -39,7 +39,7 @@ int Factory::draw(int tileType)
         if (tiles[i] == tileType)
         {
             count++;
-            tiles[i] = 0;
+            tiles[i] = NOTILE;
         }
     }
     return count;
@@ -50,7 +50,7 @@ string Factory::toString()
     string tiles = "";
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
-        if (tiles[i != 0])
+        if (tiles[i != NOTILE])
         {
             tiles += tiles[i] + " ";
         }
