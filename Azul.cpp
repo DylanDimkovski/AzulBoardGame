@@ -4,16 +4,16 @@
 int main(int argc, char const *argv[])
 {
     //GameEngine engine = new GameEngine();
-    Menu *menu = new Menu();
+    Menu menu;
     bool exit = false;
     std::string input;
     do
     {
-        menu->printMenu();
-        input = menu->getInput();
+        menu.printMenu();
+        input = menu.getInput();
         if (input == "3")
         {
-            menu->printCredits();
+            menu.printCredits();
         }
         else if (input == "4")
         {
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
         }
         else
         {
-            menu->printMessage("Invalid input, try again");
+            menu.printMessage("Invalid input, try again");
         }
     } while (!exit);
 
