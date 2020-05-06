@@ -1,7 +1,7 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include <Types.h>
+#include "Types.h"
 #include <string>
 
 using std::string;
@@ -10,14 +10,14 @@ class Factory
 {
 public:
     Factory();
-    Factory(int array[FACTORY_SIZE]);
-    void fill(int array[FACTORY_SIZE]);
-    int *empty();
-    int draw(int);
+    Factory(TileType array[FACTORY_SIZE]);
+    void fill(TileType array[FACTORY_SIZE]);
+    TileType *empty();
+    int draw(TileType tileType);
     string toString();
 
 private:
-    int tiles[FACTORY_SIZE];
+    TileType tiles[FACTORY_SIZE];
 };
 
 #endif // !FACTORY_H

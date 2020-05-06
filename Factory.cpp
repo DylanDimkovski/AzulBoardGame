@@ -1,6 +1,6 @@
-#include <Factory.h>
+#include "Factory.h"
 
-Factory::Factory(int arr[FACTORY_SIZE])
+Factory::Factory(TileType arr[FACTORY_SIZE])
 {
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
@@ -8,7 +8,7 @@ Factory::Factory(int arr[FACTORY_SIZE])
     }
 }
 
-void Factory::fill(int arr[FACTORY_SIZE])
+void Factory::fill(TileType arr[FACTORY_SIZE])
 {
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
@@ -16,10 +16,10 @@ void Factory::fill(int arr[FACTORY_SIZE])
     }
 }
 
-int *Factory::empty()
+TileType *Factory::empty()
 {
-    int array[4];
-    int *arrPtr = array;
+    TileType array[4];
+    TileType *arrPtr = array;
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
         if (tiles[i] != NOTILE)
@@ -31,7 +31,7 @@ int *Factory::empty()
     return arrPtr;
 }
 
-int Factory::draw(int tileType)
+int Factory::draw(TileType tileType)
 {
     int count = 0;
     for (int i = 0; i < FACTORY_SIZE; i++)
