@@ -1,3 +1,5 @@
+#ifndef GAMEENGINE_H
+#define GAMEENGINE_H
 #include <string>
 #include "Factory.h"
 #include "Player.h"
@@ -29,3 +31,5 @@ private:
     TileList bag;
     TileList lid;
 };
+
+#endif
