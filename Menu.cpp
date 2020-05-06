@@ -33,9 +33,9 @@ void Menu::printCredits()
     std::cout << "Student ID: s3786267" << std::endl;
     std::cout << "Email: s3786267@student.rmit.edu.au" << std::endl
               << std::endl;
-    std::cout << "Name: Dylan" << std::endl;
-    std::cout << "Student ID: <ID>" << std::endl;
-    std::cout << "Email: <ID>@student.rmit.edu.au" << std::endl
+    std::cout << "Name: Dylan Dimkovski" << std::endl;
+    std::cout << "Student ID: s3717379" << std::endl;
+    std::cout << "Email: s3717379@student.rmit.edu.au" << std::endl
               << std::endl;
 }
 

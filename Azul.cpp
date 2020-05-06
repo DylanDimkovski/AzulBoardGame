@@ -7,10 +7,16 @@ int main(int argc, char const *argv[])
     Menu menu;
     bool exit = false;
     std::string input;
+    GameEngine* engine = new GameEngine();
     do
     {
         menu.printMenu();
         input = menu.getInput();
+        if (input == "1")
+        {
+            engine->playGame();            
+        }
+        
         if (input == "3")
         {
             menu.printCredits();

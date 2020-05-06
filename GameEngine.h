@@ -14,10 +14,12 @@ public:
     void playGame();
     void playRound();
     void addPlayer(string name);
+    void addPlayers();
     Factory *getFactory(int);
     Player *getPlayer(int);
     bool isTurn(Player);
-    void fillBag();
+    void fillBag(int argc, char** argv);
+    void shuffleBag();
 
 private:
     std::vector<Player> players;
