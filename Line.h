@@ -17,9 +17,9 @@ class Line
         int getMaxSize();
 
     private:
-        TileType tileType;
-        int numTiles;
         int maxSize;
+        int numTiles;
+        TileType tileType;
 };
 
 
