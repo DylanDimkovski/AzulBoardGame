@@ -11,13 +11,13 @@
 
 enum TileType
 {
-    RED,
-    YELLOW,
-    DARKBLUE,
-    LIGTHBLUE,
-    BLACK,
-    FIRSTPLAYER,
-    NOTILE
+    RED = 'R',
+    YELLOW = 'Y',
+    DARKBLUE = 'B',
+    LIGTHBLUE = 'L',
+    BLACK = 'U',
+    FIRSTPLAYER = 'F',
+    NOTILE = '.'
 };
 
 #endif
