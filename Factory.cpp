@@ -1,4 +1,4 @@
-#include <Factory.h>
+#include "Factory.h"
 
 Factory::Factory(int arr[FACTORY_SIZE])
 {
@@ -47,13 +47,14 @@ int Factory::draw(int tileType)
 
 string Factory::toString()
 {
-    string tiles = "";
+    string output = "";
+
+    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
+
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
-        if (tiles[i != NOTILE])
-        {
-            tiles += tiles[i] + " ";
-        }
+        output += colours[tiles[i]] + ' ';
     }
-    return tiles;
+    
+    return output;
 }

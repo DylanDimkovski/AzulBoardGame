@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
         input = menu.getInput();
         if (input == "1")
         {
-            engine->playGame();            
+            engine->playGame(argv[0]);            
         }
         
         if (input == "3")
