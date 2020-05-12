@@ -16,8 +16,7 @@ int main(int argc, char const *argv[])
         {
             engine->playGame(argv[0]);            
         }
-        
-        if (input == "3")
+        else if (input == "3")
         {
             menu.printCredits();
         }

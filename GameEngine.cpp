@@ -97,10 +97,11 @@ void GameEngine::addPlayers(){
     std::cin >> name1;
     std::cout << "Enter the name for player 2: \n";
     std::cin >> name2;
+    std::cout << std::endl;
 
     players.push_back(addPlayer(name1));
     players.push_back(addPlayer(name2));
 
-    std::cout << "Let's Play! \n";
+    std::cout << "Let's Play!" << std::endl;;
 }
     
