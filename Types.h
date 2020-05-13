@@ -20,23 +20,5 @@ enum TileType
     NOTILE = '.'
 };
 
-TileType charToTileType(char c)
-{
-    TileType result = NOTILE;
-    if (c == 'R') result = RED;
-    else if (c == 'Y') result = YELLOW;
-    else if (c == 'B') result = DARKBLUE;
-    else if (c == 'L') result = LIGTHBLUE;
-    else if (c == 'U') result = BLACK;
-    else if (c == 'F') result = FIRSTPLAYER;
-    else if (c == '.') result = NOTILE;
-    return result;
-}
-
-TileType Master_Wall[5][5]{DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
-                           LIGTHBLUE, DARKBLUE, YELLOW, RED, BLACK,
-                           BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED,
-                           RED, BLACK, LIGTHBLUE, DARKBLUE, YELLOW,
-                           YELLOW, RED, BLACK, LIGTHBLUE, DARKBLUE};
 
 #endif
