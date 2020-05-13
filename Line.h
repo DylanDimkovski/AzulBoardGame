@@ -3,6 +3,7 @@
 
 #include "TileList.h"
 #include "Types.h"
+#include <string>
 
 class Line
 {
@@ -15,6 +16,7 @@ class Line
         bool hasTileType();
         int getNumTiles();
         int getMaxSize();
+        std::string toString();
 
     private:
         int maxSize;
