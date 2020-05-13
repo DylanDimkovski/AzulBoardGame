@@ -52,7 +52,7 @@ string Factory::toString()
     string output = "";
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
-        output += colours[tiles[i]] + ' ';
+        output += toupper((char)tiles[i] + ' ');
     }
 
     return output;
