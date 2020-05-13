@@ -85,3 +85,15 @@ TileType TileList::removeBack()
     else removedTile = removeFront();
     return removedTile;
 }
+
+std::string TileList::toString()
+{
+    std::string result = "";
+    Node* currentNode = head;
+    while (currentNode != nullptr)
+    {
+        result += char(currentNode->getValue());
+        currentNode = currentNode->getNextNode();
+    }
+    return result;
+}
