@@ -1,12 +1,11 @@
 #include "Player.h"
 
-Player::Player(std::string name) : Player(name, new Mosaic())
+Player::Player(std::string name) : Player(name, 0, new Mosaic())
 {}
 
-Player::Player(std::string name, Mosaic* mosaic) : name(name)
-{
-    this->mosiac = mosaic;
-}
+Player::Player(std::string name, int score, Mosaic* mosaic) : 
+    name(name), score(score), mosiac(mosaic)
+{}
 
 Player::~Player()
 {
