@@ -50,11 +50,7 @@ void GameEngine::playRound()
 {
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-<<<<<<< HEAD
         TileType temp[4] = {NOTILE};
-=======
-        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
->>>>>>> cd9a397404c733504c081b00dbe58ca38557ab38
 
         for (int j = 0; j < FACTORY_SIZE; j++)
         {
@@ -96,10 +92,8 @@ void GameEngine::setPlayerTurn(int playerIndex)
     playerTurnID = players[playerIndex];
 }
 
-
 void GameEngine::setPlayerTurn()
 {
-<<<<<<< HEAD
     if (players[0] == playerTurnID)
     {
         playerTurnID = players[1];
@@ -107,21 +101,6 @@ void GameEngine::setPlayerTurn()
     else
     {
         playerTurnID = players[0];
-=======
-    for (unsigned int i = 0; i < players.size(); i++)
-    {
-        if (players[i] == playerTurnID)
-        {
-            if (i == players.size() - 1)
-            {
-                playerTurnID = players[0];
-            }
-            else
-            {
-                playerTurnID = players[i + 1];
-            }
-        }
->>>>>>> cd9a397404c733504c081b00dbe58ca38557ab38
     }
 }
 
@@ -158,12 +137,11 @@ Player *GameEngine::addPlayer(string name)
     return addPlayer(name, 0, new Mosaic());
 }
 
-Player * GameEngine::addPlayer(std::string name, int score, Mosaic* mosaic)
+Player *GameEngine::addPlayer(std::string name, int score, Mosaic *mosaic)
 {
     players.push_back(new Player(name, score, mosaic));
     return players.back();
 }
-
 
 void GameEngine::addPlayers()
 {
