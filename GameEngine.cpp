@@ -16,7 +16,7 @@ GameEngine::GameEngine(Menu *menu) : players(),
 
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        int temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE};
         factories[i] = new Factory(temp);
     }
 }
@@ -42,7 +42,7 @@ void GameEngine::playRound()
 {
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        int temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE};
 
         for (int j = 0; j < FACTORY_SIZE; j++)
         {
@@ -82,19 +82,13 @@ void GameEngine::playRound()
 
 void GameEngine::setPlayerTurn()
 {
-    for (int i = 0; i < (int)players.size(); i++)
+    if (players[0] == playerTurnID)
     {
-        if (players[i] == playerTurnID)
-        {
-            if (i == (int)players.size() - 1)
-            {
-                playerTurnID = players[0];
-            }
-            else
-            {
-                playerTurnID = players[i + 1];
-            }
-        }
+        playerTurnID = players[1];
+    }
+    else
+    {
+        playerTurnID = players[0];
     }
 }
 
