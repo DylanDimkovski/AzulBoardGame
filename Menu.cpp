@@ -42,6 +42,74 @@ void Menu::printCredits()
 void Menu::printMessage(std::string message)
 {
     std::cout << std::endl
-              << message << std::endl
+              << message
               << std::endl;
+}
+
+void Menu::roundStart(string playername)
+{
+    std::cout << "=== Start Round === \n";
+    std::cout << "TURN FOR PLAYER: " << playername << std::endl;
+    std::cout << "Factories: \n";
+}
+
+void Menu::printFactory(int id, string contents)
+{
+    std::cout << id << ": " << contents << std::endl;
+    std::cout << (id == 5 ? "\n" : "");
+}
+
+void Menu::printFactory(std::vector<TileType> *centerPile)
+{
+    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
+
+    std::cout << "0: ";
+    for (auto tile : *centerPile)
+    {
+        std::cout << colours[tile] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void Menu::printMosaic(Player *player)
+{
+    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
+
+    std::cout << "Mosaic for " << player->getName() << std::endl;
+    for (int i = 0; i < NUMBER_OF_LINES; i++)
+    {
+        std::cout << i + 1 << ": ";
+        std::string output;
+        int lineSize = player->getMosaic()->getLine(i)->getMaxSize();
+        int numTiles = player->getMosaic()->getLine(i)->getNumTiles();
+
+        for (int i = 0; i < 5 - lineSize; i++)
+        {
+            output += "  ";
+        }
+
+        for (int i = 0; i < lineSize - numTiles; i++)
+        {
+            output += ". ";
+        }
+        for (int i = 0; i < numTiles; i++)
+        {
+            output += " " + colours[player->getMosaic()->getLine(i)->getTileType()];
+        }
+
+        output += " || ";
+
+        for (int i = 0; i < NUMBER_OF_LINES; i++)
+        {
+            if (player->getMosaic()->getWallLine(i)[i] == true)
+            {
+                output += " P";
+            }
+            else
+            {
+                output += " .";
+            }
+        }
+        std::cout << output << std::endl;
+    }
 }

@@ -1,8 +1,8 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include "Types.h"
 #include <string>
+#include "Types.h"
 
 using std::string;
 

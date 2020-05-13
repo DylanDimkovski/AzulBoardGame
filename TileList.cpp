@@ -1,5 +1,7 @@
 #include "TileList.h"
 
+#include <iostream>
+
 TileList::TileList() : head(nullptr), tail(nullptr), length(0)
 {}
 
@@ -84,4 +86,8 @@ TileType TileList::removeBack()
     }
     else removedTile = removeFront();
     return removedTile;
+}
+
+Node* TileList::getHead(){
+    return head;
 }

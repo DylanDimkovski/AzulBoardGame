@@ -8,18 +8,20 @@
 
 class Mosaic
 {
-    public:
-        Mosaic();
-        ~Mosaic();
-        bool isFilled(int row, int col);
-        void setFilled(int row, int col, bool filled);
-        void insertTilesIntoLine(int row, int quantity, TileType tileType);
+public:
+    Mosaic();
+    ~Mosaic();
+    bool isFilled(int row, int col);
+    void setFilled(int row, int col, bool filled);
+    void insertTilesIntoLine(int row, int quantity, TileType tileType);
+    Line *getLine(int line);
+    bool *getWallLine(int line);
 
-    private:
-        Line* lines[NUMBER_OF_LINES];
-        bool wall[NUMBER_OF_LINES][NUMBER_OF_LINES];
-        // may need to be pointer
-        TileList brokenTiles;
+private:
+    Line *lines[NUMBER_OF_LINES];
+    bool wall[NUMBER_OF_LINES][NUMBER_OF_LINES];
+    // may need to be pointer
+    TileList brokenTiles;
 };
 
 #endif

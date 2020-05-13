@@ -1,11 +1,12 @@
 #include "Line.h"
 
 Line::Line(int maxSize) : Line(maxSize, 0, NOTILE)
-{}
+{
+}
 
-Line::Line(int maxSize, int numTiles, TileType tileType) :
-    maxSize(maxSize), numTiles(numTiles), tileType(tileType)
-{}
+Line::Line(int maxSize, int numTiles, TileType tileType) : maxSize(maxSize), numTiles(numTiles), tileType(tileType)
+{
+}
 
 int Line::addTiles(int quantity, TileType tileType)
 {

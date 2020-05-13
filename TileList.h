@@ -13,6 +13,7 @@ class TileList
         void clear();
         void addFront(TileType tile);
         void addBack(TileType tile);
+        Node* getHead();
         TileType removeFront();
         TileType removeBack();
 
