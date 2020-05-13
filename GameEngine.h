@@ -26,6 +26,8 @@ public:
     void fillBag(TileList bag);
     void fillLid(TileList lid);
     void fillFactories(Factory* factories[]);
+    void setPlayerTurn(int playerIndex);
+
 
     // Getters
     Factory *getFactory(int);

@@ -181,8 +181,8 @@ GameEngine* Saver::load(std::istream& inputStream)
 
     gameEngine->fillFactories(factories);
 
-    // if (player1Turn) gameEngine->Turn(player1Name);
-    // else gameEngine->setTurn(player2Name);
+    if (player1Turn) gameEngine->setPlayerTurn(0);
+    else gameEngine->setPlayerTurn(1);
 
     return gameEngine;
 }

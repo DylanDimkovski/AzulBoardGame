@@ -83,13 +83,19 @@ void GameEngine::playRound()
     }
 }
 
+void GameEngine::setPlayerTurn(int playerIndex)
+{
+    playerTurnID = players[playerIndex];
+}
+
+
 void GameEngine::setPlayerTurn()
 {
-    for (int i = 0; i < (int)players.size(); i++)
+    for (unsigned int i = 0; i < players.size(); i++)
     {
         if (players[i] == playerTurnID)
         {
-            if (i == (int)players.size() - 1)
+            if (i == players.size() - 1)
             {
                 playerTurnID = players[0];
             }
