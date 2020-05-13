@@ -37,7 +37,12 @@ void Mosaic::setFilled(int row, int col, bool filled)
 void Mosaic::insertTilesIntoLine(int row, int quantity, TileType tileType)
 {
     int overflow = lines[row]->addTiles(quantity, tileType);
-    for (int i = 0; i < overflow; ++i)
+    addToBrokenTiles(overflow, tileType);
+}
+
+void Mosaic::addToBrokenTiles(int quantity, TileType tileType)
+{
+    for (int i = 0; i < quantity; ++i)
     {
         brokenTiles.addBack(tileType);
     }

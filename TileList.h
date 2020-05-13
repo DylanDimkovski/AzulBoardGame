@@ -3,6 +3,7 @@
 
 #include "Types.h"
 #include "Node.h"
+#include <string>
 
 class TileList
 {
@@ -13,9 +14,9 @@ class TileList
         void clear();
         void addFront(TileType tile);
         void addBack(TileType tile);
-        Node* getHead();
         TileType removeFront();
         TileType removeBack();
+        std::string toString();
 
     private:
         Node* head;
