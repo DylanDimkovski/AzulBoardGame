@@ -39,7 +39,7 @@ void GameEngine::playGame(char const *argv)
     {
         playRound();
         roundsPlayed++;
-    } while (roundsPlayed < 1);
+    } while (roundsPlayed < 2);
 }
 
 void GameEngine::playRound()
@@ -72,8 +72,9 @@ void GameEngine::playRound()
             if (input.substr(0, 4) == "turn")
             {
                 int factoryNum = (int)input[6];
-                TileType colour;
+                TileType colour = charToTileType(input[8]);
                 int lineNum = (int)input[10];
+                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(colour), colour);
                 setPlayerTurn();
                 inputDone = true;
             }
