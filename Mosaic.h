@@ -17,13 +17,12 @@ public:
     void addToBrokenTiles(int quantity, TileType tileType);
     Line *getLine(int line);
     bool *getWallLine(int line);
-    TileList getBrokenTiles();
+    TileList* getBrokenTiles();
 
 private:
     Line *lines[NUMBER_OF_LINES];
     bool wall[NUMBER_OF_LINES][NUMBER_OF_LINES];
-    // may need to be pointer
-    TileList brokenTiles;
+    TileList* brokenTiles;
 };
 
 #endif

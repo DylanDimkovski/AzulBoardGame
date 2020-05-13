@@ -14,6 +14,7 @@ Mosaic::Mosaic()
             wall[i][j] = false;
         }
     }
+    brokenTiles = new TileList();
 }
 
 Mosaic::~Mosaic()
@@ -22,6 +23,7 @@ Mosaic::~Mosaic()
     {
         delete lines[i];
     }
+    delete brokenTiles;
 }
 
 bool Mosaic::isFilled(int row, int col)
@@ -44,7 +46,7 @@ void Mosaic::addToBrokenTiles(int quantity, TileType tileType)
 {
     for (int i = 0; i < quantity; ++i)
     {
-        brokenTiles.addBack(tileType);
+        brokenTiles->addBack(tileType);
     }
 }
 
@@ -56,4 +58,9 @@ Line *Mosaic::getLine(int line)
 bool *Mosaic::getWallLine(int line)
 {
     return wall[line];
+}
+
+TileList* Mosaic::getBrokenTiles()
+{
+    return brokenTiles;
 }
