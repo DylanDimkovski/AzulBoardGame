@@ -16,11 +16,7 @@ GameEngine::GameEngine(Menu *menu) : players(),
 
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-<<<<<<< HEAD
         TileType temp[4] = {NOTILE};
-=======
-        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
->>>>>>> cd9a397404c733504c081b00dbe58ca38557ab38
         factories[i] = new Factory(temp);
     }
 }
