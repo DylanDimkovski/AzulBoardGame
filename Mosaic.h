@@ -15,6 +15,7 @@ public:
     void setFilled(int row, int col, bool filled);
     void insertTilesIntoLine(int row, int quantity, TileType tileType);
     Line *getLine(int line);
+    bool *getWallLine(int line);
 
 private:
     Line *lines[NUMBER_OF_LINES];

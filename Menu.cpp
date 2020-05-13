@@ -78,7 +78,8 @@ void Menu::printMosaic(Player *player)
     std::cout << "Mosaic for " << player->getName() << std::endl;
     for (int i = 0; i < NUMBER_OF_LINES; i++)
     {
-        std::string output = "";
+        std::cout << i + 1 << ": ";
+        std::string output;
         int lineSize = player->getMosaic()->getLine(i)->getMaxSize();
         int numTiles = player->getMosaic()->getLine(i)->getNumTiles();
 
@@ -95,6 +96,20 @@ void Menu::printMosaic(Player *player)
         {
             output += " " + colours[player->getMosaic()->getLine(i)->getTileType()];
         }
-        std::cout << output << " || " << std::endl;
+
+        output += " || ";
+
+        for (int i = 0; i < NUMBER_OF_LINES; i++)
+        {
+            if (player->getMosaic()->getWallLine(i)[i] == true)
+            {
+                output += " P";
+            }
+            else
+            {
+                output += " .";
+            }
+        }
+        std::cout << output << std::endl;
     }
 }

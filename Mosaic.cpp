@@ -47,3 +47,8 @@ Line *Mosaic::getLine(int line)
 {
     return lines[line];
 }
+
+bool *Mosaic::getWallLine(int line)
+{
+    return wall[line];
+}
