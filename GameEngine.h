@@ -25,22 +25,22 @@ public:
     void addPlayers();
 
     void fillBag(int argc, char **argv);
-    void fillBag(TileList bag);
-    void fillLid(TileList lid);
+    void fillBag(TileList* bag);
+    void fillLid(TileList* lid);
     void fillFactories(Factory *factories[]);
     void setPlayerTurn(int playerIndex);
 
     // Getters
     Factory *getFactory(int);
-    Player *getPlayer(int);
+    Player *getPlayer(int playerIndex);
     bool isTurn(Player);
     void fillBag(int seed);
     void shuffleBag();
-    int getRandomSeed();
     bool isPlayer1Turn();
     std::vector<TileType> getCenterPile();
-    TileList getBag();
-    TileList getLid();
+    TileList* getBag();
+    TileList* getLid();
+    Player* getPlayerTurnID();
 
 private:
     void setPlayerTurn();

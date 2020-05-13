@@ -1,5 +1,13 @@
 #include "Saver.h"
 
+// need to put this in gameEngine
+TileType Master_Wall[5][5]{DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
+                           LIGTHBLUE, DARKBLUE, YELLOW, RED, BLACK,
+                           BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED,
+                           RED, BLACK, LIGTHBLUE, DARKBLUE, YELLOW,
+                           YELLOW, RED, BLACK, LIGTHBLUE, DARKBLUE};
+
+
 void Saver::save(GameEngine* gameEngine, std::string fileName)
 {
     std::ofstream outputStream(fileName);
@@ -8,8 +16,8 @@ void Saver::save(GameEngine* gameEngine, std::string fileName)
 
 void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 {
-    outputStream << gameEngine->getRandomSeed() << std::endl;
-    outputStream << (gameEngine->isPlayer1Turn() ? "true" : "false") << std::endl;
+    // outputStream << gameEngine->getRandomSeed() << std::endl;
+    outputStream << (gameEngine->getPlayer(0) == gameEngine->getPlayerTurnID() ? "true" : "false") << std::endl;
     // Player 1 index
     outputStream << gameEngine->getPlayer(0)->getName() << std::endl;
     outputStream << gameEngine->getPlayer(0)->getScore() << std::endl;
@@ -37,7 +45,7 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
         outputStream << player1Mosaic->getLine(i)->toString() << std::endl;
     }
 
-    outputStream << player1Mosaic->getBrokenTiles().toString() << std::endl;
+    outputStream << player1Mosaic->getBrokenTiles()->toString() << std::endl;
 
     // Need to output Player 1 wall
     outputWall(outputStream, player1Mosaic);
@@ -50,14 +58,14 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
         outputStream << player2Mosaic->getLine(i)->toString() << std::endl;
     }
 
-    outputStream << player2Mosaic->getBrokenTiles().toString() << std::endl;
+    outputStream << player2Mosaic->getBrokenTiles()->toString() << std::endl;
 
     // Need to output Player 2 wall
     outputWall(outputStream, player2Mosaic);
 
 
-    outputStream << gameEngine->getLid().toString() << std::endl;
-    outputStream << gameEngine->getBag().toString() << std::endl;
+    outputStream << gameEngine->getLid()->toString() << std::endl;
+    outputStream << gameEngine->getBag()->toString() << std::endl;
     outputStream.close();
 }
 
@@ -79,10 +87,10 @@ GameEngine* Saver::load(std::istream& inputStream)
     // }
 
 
-    // Get seed
-    int seed;
-    std::istringstream seedStream = getLineAsStream(inputStream);
-    if (seedStream.good()) seedStream >> seed;
+    // // Get seed
+    // int seed;
+    // std::istringstream seedStream = getLineAsStream(inputStream);
+    // if (seedStream.good()) seedStream >> seed;
 
     // Check if it's player 1's turn
     bool player1Turn = true;
@@ -146,7 +154,7 @@ GameEngine* Saver::load(std::istream& inputStream)
     Mosaic* player2mosaic = generateMosiac(inputStream);
 
     // Create lid
-    TileList lid;
+    TileList* lid = new TileList();
     std::istringstream lidStream = getLineAsStream(inputStream);
     while (lidStream.good())
     {
@@ -155,12 +163,12 @@ GameEngine* Saver::load(std::istream& inputStream)
         TileType tile = charToTileType(c);
         if (tile != NOTILE && tile != FIRSTPLAYER)
         {
-            lid.addBack(tile);
+            lid->addBack(tile);
         }
     }
 
     // Create bag
-    TileList bag;
+    TileList* bag = new TileList();
     std::istringstream bagStream = getLineAsStream(inputStream);
     while (bagStream.good())
     {
@@ -169,7 +177,7 @@ GameEngine* Saver::load(std::istream& inputStream)
         TileType tile = charToTileType(c);
         if (tile != NOTILE && tile != FIRSTPLAYER)
         {
-            bag.addBack(tile);
+            bag->addBack(tile);
         }
     }
 

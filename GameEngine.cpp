@@ -16,7 +16,7 @@ GameEngine::GameEngine(Menu *menu) : players(),
 
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        TileType temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
         factories[i] = new Factory(temp);
     }
 }
@@ -27,6 +27,8 @@ GameEngine::~GameEngine()
     {
         delete factories[i];
     }
+    delete bag;
+    delete lid;
 }
 
 void GameEngine::playGame(char const *argv)
@@ -46,7 +48,7 @@ void GameEngine::playRound()
 {
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        TileType temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
 
         for (int j = 0; j < FACTORY_SIZE; j++)
         {
@@ -130,6 +132,24 @@ void GameEngine::fillBag(int seed)
     }
 }
 
+void GameEngine::fillBag(TileList* bag)
+{
+    this->bag = bag;
+}
+
+void GameEngine::fillLid(TileList* lid)
+{
+    this->lid = lid;
+}
+
+void GameEngine::fillFactories(Factory *factories[])
+{
+    for (int i = 0; i < FACTORY_SIZE; ++i)
+    {
+        this->factories[i] = factories[i];
+    }
+}
+
 Player *GameEngine::addPlayer(string name)
 {
     //creates a new player
@@ -155,4 +175,29 @@ void GameEngine::addPlayers()
     addPlayer(name2);
 
     menu->printMessage("Let's Play!");
+}
+
+std::vector<TileType> GameEngine::getCenterPile()
+{
+return centerPile;
+}
+
+TileList* GameEngine::getBag()
+{
+return bag;
+}
+
+TileList* GameEngine::getLid()
+{
+return lid;
+}
+
+Player* GameEngine::getPlayerTurnID()
+{
+    return playerTurnID;
+}
+
+Player *GameEngine::getPlayer(int playerIndex)
+{
+    return players.at(playerIndex);
 }
