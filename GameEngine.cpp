@@ -16,13 +16,17 @@ GameEngine::GameEngine(Menu *menu) : players(),
 
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        int temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
         factories[i] = new Factory(temp);
     }
 }
 
 GameEngine::~GameEngine()
 {
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+    {
+        delete factories[i];
+    }
 }
 
 void GameEngine::playGame(char const *argv)
@@ -42,12 +46,11 @@ void GameEngine::playRound()
 {
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        int temp[4] = {NOTILE};
+        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
 
         for (int j = 0; j < FACTORY_SIZE; j++)
         {
-            temp[j] = bag->getHead()->getValue();
-            bag->removeFront();
+            temp[j] = bag->removeFront();
         }
 
         factories[i]->fill(temp);
@@ -128,8 +131,15 @@ void GameEngine::fillBag(int seed)
 Player *GameEngine::addPlayer(string name)
 {
     //creates a new player
-    return new Player(name, 0);
+    return addPlayer(name, 0, new Mosaic());
 }
+
+Player * GameEngine::addPlayer(std::string name, int score, Mosaic* mosaic)
+{
+    players.push_back(new Player(name, score, mosaic));
+    return players.back();
+}
+
 
 void GameEngine::addPlayers()
 {
@@ -140,9 +150,8 @@ void GameEngine::addPlayers()
     menu->printMessage("Enter the name for player 2: \n");
     string name2 = menu->getInput();
 
-    players.push_back(addPlayer(name1));
-    players.push_back(addPlayer(name2));
+    addPlayer(name1);
+    addPlayer(name2);
 
     menu->printMessage("Let's Play!");
-    ;
 }

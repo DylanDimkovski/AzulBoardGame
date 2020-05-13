@@ -88,6 +88,14 @@ TileType TileList::removeBack()
     return removedTile;
 }
 
-Node* TileList::getHead(){
-    return head;
+std::string TileList::toString()
+{
+    std::string result = "";
+    Node* currentNode = head;
+    while (currentNode != nullptr)
+    {
+        result += char(currentNode->getValue());
+        currentNode = currentNode->getNextNode();
+    }
+    return result;
 }

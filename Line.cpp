@@ -10,7 +10,7 @@ Line::Line(int maxSize, int numTiles, TileType tileType) : maxSize(maxSize), num
 
 int Line::addTiles(int quantity, TileType tileType)
 {
-    int overflow = -1;
+    int overflow = 0;
     if (!hasTileType() || getTileType() == tileType)
     {
         this->tileType = tileType;
@@ -48,4 +48,18 @@ int Line::getNumTiles()
 int Line::getMaxSize()
 {
     return maxSize;
+}
+
+std::string Line::toString()
+{
+    std::string result = "";
+    for (int i = 0; i < maxSize - numTiles; ++i)
+    {
+        result += char(NOTILE);
+    }
+    for (int i = 0; i < numTiles; ++i)
+    {
+        result += char(tileType);
+    }
+    return result;
 }
