@@ -13,17 +13,37 @@ class GameEngine
 public:
     GameEngine();
     ~GameEngine();
+
+    // Playing Game Methods
     void playGame();
     void playRound();
+
+    // Adders / Setters
     void addPlayer(string name);
+    void addPlayer(string name, int score, Mosaic* mosaic);
     void addPlayers();
+
+    void fillBag(int argc, char** argv);
+    void fillBag(TileList bag);
+    void fillLid(TileList lid);
+    void fillFactories(Factory* factories[]);
+
+    // Getters
     Factory *getFactory(int);
     Player *getPlayer(int);
     bool isTurn(Player);
-    void fillBag(int argc, char** argv);
+    void setTurn(string playerName);
     void shuffleBag();
+    int getRandomSeed();
+    bool isPlayer1Turn();
+    std::vector<TileType> getCenterPile();
+    TileList getBag();
+    TileList getLid();
 
 private:
+    void addPlayer(Player player);
+
+    int randomSeed;
     std::vector<Player> players;
     Factory *factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;

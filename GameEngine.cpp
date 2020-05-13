@@ -9,6 +9,10 @@ GameEngine::GameEngine()
 
 GameEngine::~GameEngine()
 {
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+    {
+        delete factories[i];
+    }
 }
 
 void GameEngine::playGame()
@@ -58,7 +62,7 @@ void GameEngine::fillBag(int argc, char** argv)
         }
     }
 
-    std::random_shuffle(std::begin(temp), std::end(temp), std::srand(argv) % 100);
+    // std::random_shuffle(std::begin(temp), std::end(temp), std::srand(argv) % 100);
 
     for (int i = 0; i < 100; i++)
     {
@@ -66,9 +70,35 @@ void GameEngine::fillBag(int argc, char** argv)
     }   
 }
 
+void GameEngine::fillBag(TileList bag)
+{
+    this->bag = bag;
+}
+
+void GameEngine::fillLid(TileList lid)
+{
+    this->lid = lid;
+}
+
+void GameEngine::fillFactories(Factory* factories[NUM_FACTORIES])
+{
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+    {
+        this->factories[i] = factories[i];
+    }
+}
+
+
 void GameEngine::addPlayer(string name)
 {
-    Player* player = new Player(name);
+    Player p(name);
+    addPlayer(p);
+}
+
+void GameEngine::addPlayer(string name, int score, Mosaic* mosaic)
+{
+    Player p(name, score, mosaic);
+    addPlayer(p);
 }
 
 void GameEngine::addPlayers(){
@@ -83,3 +113,7 @@ void GameEngine::addPlayers(){
     addPlayer(name2);
 }
     
+void GameEngine::addPlayer(Player player)
+{
+    players.push_back(player);
+}
