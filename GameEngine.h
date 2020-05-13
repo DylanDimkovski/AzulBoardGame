@@ -1,9 +1,11 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
-#include <string>
+
 #include "Factory.h"
 #include "Player.h"
 #include "TileList.h"
+
+#include <string>
 #include <vector>
 
 using std::string;
@@ -13,23 +15,23 @@ class GameEngine
 public:
     GameEngine();
     ~GameEngine();
-    void playGame();
+    void playGame(char const *argv);
     void playRound();
-    void addPlayer(string name);
+    Player *addPlayer(string name);
     void addPlayers();
     Factory *getFactory(int);
     Player *getPlayer(int);
     bool isTurn(Player);
-    void fillBag(int argc, char** argv);
+    void fillBag(int seed);
     void shuffleBag();
 
 private:
-    std::vector<Player> players;
-    Factory *factories[NUM_FACTORIES];
+    std::vector<Player*> players;
+    Factory* factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;
     string playerTurnID;
-    TileList bag;
-    TileList lid;
+    TileList* bag;
+    TileList* lid;
 };
 
 #endif

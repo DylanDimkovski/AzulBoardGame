@@ -1,23 +1,58 @@
-#include <iostream>
-#include <algorithm>
 #include "GameEngine.h"
 
-GameEngine::GameEngine()
+#include <iostream>
+#include <algorithm>
+#include <random>
+
+GameEngine::GameEngine() :
+    players(),
+    factories(),
+    centerPile(),
+    playerTurnID("-1"),
+    bag(new TileList()),
+    lid(new TileList())
 {
     centerPile.push_back(FIRSTPLAYER);
+
+    for (int i = 0; i < NUM_FACTORIES; i++) {
+        int temp[4] = {NOTILE};
+        factories[i] = new Factory(temp);
+    }
 }
 
 GameEngine::~GameEngine()
 {
 }
 
-void GameEngine::playGame()
+void GameEngine::playGame(char const *argv)
 {
     addPlayers();
+    fillBag(argv[0]);
+    playerTurnID = players[0]->getName();
+    playRound();
 }
 
 void GameEngine::playRound()
 {
+
+    std::cout << "=== Start Round === \n";
+    std::cout << "TURN FOR PLAYER: " << playerTurnID << std::endl;
+    std::cout << "Factories: \n";
+    std::cout << 0 << ": " << std::endl;
+    
+    for (int i = 0; i < NUM_FACTORIES; i++)
+    {
+        int temp[4] = {NOTILE};
+
+        for (int j = 0; j < FACTORY_SIZE; j++) {
+            temp[j] = bag->getHead()->getValue(); 
+            bag->removeFront();
+        }
+
+        factories[i]->fill(temp);
+        std::cout << i + 1 << ": " << factories[i]->toString() << std::endl;
+    }
+    
 }
 
 Factory *GameEngine::getFactory(int position)
@@ -25,61 +60,48 @@ Factory *GameEngine::getFactory(int position)
     return factories[position];
 }
 
-void GameEngine::fillBag(int argc, char** argv)
+void GameEngine::fillBag(int seed)
 {
-    TileList* bag = new TileList();
+    //Create both a bag and shuffle vector
+    TileType tileTypes[5] = {BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED};
     TileType temp[100];
 
+    //Store all tiles in temp bag SORTED
     for (int i = 0; i < 100; i++)
     {
-        if (i < 20)
-        {
-            temp[i] = BLACK;
-        }
-
-        if (i < 40 && i > 20)
-        {
-            temp[i] = LIGTHBLUE;
-        }
-
-        if (i < 60 && i > 40)
-        {
-            temp[i] = DARKBLUE;
-        }
-        
-        if (i < 80 && i > 60)
-        {
-            temp[i] = YELLOW;
-        }
-        
-        if (i < 100 && i > 80)
-        {
-            temp[i] = RED;
-        }
+        temp[i] = tileTypes[i / 20];
     }
 
-    std::random_shuffle(std::begin(temp), std::end(temp), std::srand(argv) % 100);
+    //Shuffle temp bag
+    std::shuffle(std::begin(temp), std::end(temp), std::default_random_engine(seed));
 
+    //Store shuffled tiles into the game bag
     for (int i = 0; i < 100; i++)
     {
-        bag->addFront(temp[i]);
+        bag->addBack(temp[i]);
     }   
+
 }
 
-void GameEngine::addPlayer(string name)
+Player* GameEngine::addPlayer(string name)
 {
-    Player* player = new Player(name);
+    //creates a new player
+    return new Player(name, 0);
 }
 
 void GameEngine::addPlayers(){
+    //Checks for player names and adds them to player vector
     std::string name1;
     std::string name2;
     std::cout << "Enter the name for player 1: \n";
     std::cin >> name1;
     std::cout << "Enter the name for player 2: \n";
     std::cin >> name2;
+    std::cout << std::endl;
 
-    addPlayer(name1);
-    addPlayer(name2);
+    players.push_back(addPlayer(name1));
+    players.push_back(addPlayer(name2));
+
+    std::cout << "Let's Play!" << std::endl;;
 }
     
