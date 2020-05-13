@@ -5,8 +5,10 @@
 #include <iostream>
 #include <istream>
 #include <sstream>
+#include <fstream>
 #include "GameEngine.h"
 #include "Menu.h"
+#include "Factory.h"
 
 using std::string;
 
@@ -19,7 +21,8 @@ class Saver
     private:
         bool save(GameEngine* gameEngine, std::ofstream& outputStream);
         GameEngine* load(std::istream& inputStream);
-        TileType charToTileType(char c);
+        void outputWall(std::ofstream& outputStream, Mosaic* mosaic);
+        char tileTypeToLower(TileType tileType);
         Mosaic* generateMosiac(std::istream& inputStream);
         std::istringstream getLineAsStream(std::istream& inputStream);
 };

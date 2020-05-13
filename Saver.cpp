@@ -1,6 +1,4 @@
 #include "Saver.h"
-#include <fstream>
-#include "Factory.h"
 
 bool Saver::save(GameEngine* gameEngine, std::string fileName)
 {
@@ -10,54 +8,56 @@ bool Saver::save(GameEngine* gameEngine, std::string fileName)
 
 bool Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 {
-    outputStream << gameEngine->getRandomSeed() << "\n";
-    outputStream << (gameEngine->isPlayer1Turn() ? "true" : "false") << "\n";
+    outputStream << gameEngine->getRandomSeed() << std::endl;
+    outputStream << (gameEngine->isPlayer1Turn() ? "true" : "false") << std::endl;
     // Player 1 index
-    outputStream << gameEngine->getPlayer(0)->getName() << "\n";
-    outputStream << gameEngine->getPlayer(0)->getScore() << "\n";
+    outputStream << gameEngine->getPlayer(0)->getName() << std::endl;
+    outputStream << gameEngine->getPlayer(0)->getScore() << std::endl;
 
     // Player 2 index
-    outputStream << gameEngine->getPlayer(1)->getName() << "\n";
-    outputStream << gameEngine->getPlayer(1)->getScore() << "\n";
+    outputStream << gameEngine->getPlayer(1)->getName() << std::endl;
+    outputStream << gameEngine->getPlayer(1)->getScore() << std::endl;
 
     std::vector<TileType> centerPile = gameEngine->getCenterPile();
-    for (int i = 0; i < centerPile.size(); ++i)
+    for (unsigned int i = 0; i < centerPile.size(); ++i)
     {
         outputStream << char(centerPile.at(i));
     }
-    outputStream << "\n";
+    outputStream << std::endl;
 
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        outputStream << gameEngine->getFactory(i)->toString() << "\n";
+        outputStream << gameEngine->getFactory(i)->toString() << std::endl;
     }
 
     // Player 1 mosiac
     Mosaic* player1Mosaic = gameEngine->getPlayer(0)->getMosaic();
     for (int i = 0; i < NUMBER_OF_LINES; ++i)
     {
-        outputStream << player1Mosaic->getLine(i)->toString() << "\n";
+        outputStream << player1Mosaic->getLine(i)->toString() << std::endl;
     }
 
-    outputStream << player1Mosaic->getBrokenTiles().toString() << "\n";
+    outputStream << player1Mosaic->getBrokenTiles().toString() << std::endl;
 
     // Need to output Player 1 wall
+    outputWall(outputStream, player1Mosaic);
 
 
     // Player 2 mosiac
     Mosaic* player2Mosaic = gameEngine->getPlayer(1)->getMosaic();
     for (int i = 1; i <= NUMBER_OF_LINES; ++i)
     {
-        outputStream << player2Mosaic->getLine(i)->toString() << "\n";
+        outputStream << player2Mosaic->getLine(i)->toString() << std::endl;
     }
 
-    outputStream << player2Mosaic->getBrokenTiles().toString() << "\n";
+    outputStream << player2Mosaic->getBrokenTiles().toString() << std::endl;
 
     // Need to output Player 2 wall
+    outputWall(outputStream, player2Mosaic);
 
 
-    outputStream << gameEngine->getLid().toString() << "\n";
-    outputStream << gameEngine->getBag().toString() << "\n";
+    outputStream << gameEngine->getLid().toString() << std::endl;
+    outputStream << gameEngine->getBag().toString() << std::endl;
     outputStream.close();
 }
 
@@ -187,6 +187,21 @@ GameEngine* Saver::load(std::istream& inputStream)
     return gameEngine;
 }
 
+void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
+{
+    for (int row = 0; NUMBER_OF_LINES; ++row)
+    {
+        for (int col = 0; NUMBER_OF_LINES; ++col)
+        {
+            if (mosaic->isFilled(row, col))
+                outputStream << char(Master_Wall[row][col]);
+            else
+                outputStream << tileTypeToLower(Master_Wall[row][col]);
+        }
+    }
+    outputStream << std::endl;
+}
+
 Mosaic* Saver::generateMosiac(std::istream& inputStream)
 {
     Mosaic* mosaic = new Mosaic();
@@ -236,15 +251,14 @@ std::istringstream Saver::getLineAsStream(std::istream& inputStream)
 }
 
 
-TileType Saver::charToTileType(char c)
+char Saver::tileTypeToLower(TileType tileType)
 {
-    TileType result = NOTILE;
-    if (c == 'R') result = RED;
-    else if (c == 'Y') result = YELLOW;
-    else if (c == 'B') result = DARKBLUE;
-    else if (c == 'L') result = LIGTHBLUE;
-    else if (c == 'U') result = BLACK;
-    else if (c == 'F') result = FIRSTPLAYER;
-    else if (c == '.') result = NOTILE;
+    char result = '\0';
+    if (tileType == 'R') result = 'r';
+    else if (tileType == 'Y') result = 'y';
+    else if (tileType == 'B') result = 'b';
+    else if (tileType == 'L') result = 'l';
+    else if (tileType == 'U') result = 'u';
+    else result = char(tileType);
     return result;
 }
