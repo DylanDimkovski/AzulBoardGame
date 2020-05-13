@@ -14,7 +14,8 @@ std::string Menu::getInput()
     std::string input;
     std::cout << std::endl
               << "> ";
-    std::cin >> input;
+    std::getline(std::cin, input);
+    std::cout << input << std::endl;
     return input;
 }
 void Menu::printRound(bool playerTurn, Factory factories[])
@@ -61,12 +62,10 @@ void Menu::printFactory(int id, string contents)
 
 void Menu::printFactory(std::vector<TileType> *centerPile)
 {
-    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
-
     std::cout << "0: ";
-    for (auto tile : *centerPile)
+    for (TileType tile : *centerPile)
     {
-        std::cout << colours[tile] << " ";
+        std::cout << (char)tile << " ";
     }
     std::cout << std::endl;
 }

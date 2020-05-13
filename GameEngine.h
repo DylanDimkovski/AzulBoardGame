@@ -8,6 +8,7 @@
 #include "Utils.h"
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <vector>
 
@@ -25,8 +26,8 @@ public:
     void addPlayers();
 
     void fillBag(int argc, char **argv);
-    void fillBag(TileList* bag);
-    void fillLid(TileList* lid);
+    void fillBag(TileList *bag);
+    void fillLid(TileList *lid);
     void fillFactories(Factory *factories[]);
     void setPlayerTurn(int playerIndex);
 
@@ -38,9 +39,9 @@ public:
     void shuffleBag();
     bool isPlayer1Turn();
     std::vector<TileType> getCenterPile();
-    TileList* getBag();
-    TileList* getLid();
-    Player* getPlayerTurnID();
+    TileList *getBag();
+    TileList *getLid();
+    Player *getPlayerTurnID();
 
 private:
     void setPlayerTurn();

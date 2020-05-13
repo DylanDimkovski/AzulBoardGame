@@ -41,7 +41,7 @@ void GameEngine::playGame(char const *argv)
     {
         playRound();
         roundsPlayed++;
-    } while (roundsPlayed < 2);
+    } while (roundsPlayed < 1);
 }
 
 void GameEngine::playRound()
@@ -57,7 +57,10 @@ void GameEngine::playRound()
 
         factories[i]->fill(temp);
     }
-    for (int i = 0; i < (int)players.size(); i++)
+
+    bool factories_empty = false;
+
+    do
     {
         menu->roundStart(playerTurnID->getName());
         menu->printFactory(&centerPile);
@@ -71,12 +74,33 @@ void GameEngine::playRound()
         do
         {
             string input = menu->getInput();
-            if (input.substr(0, 4) == "turn")
+            std::stringstream ss;
+            ss << input;
+
+            string command;
+
+            ss >> command;
+
+            if (command == "turn")
             {
-                int factoryNum = (int)input[6];
-                TileType colour = charToTileType(input[8]);
-                int lineNum = (int)input[10];
-                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(colour), colour);
+                int factoryNum;
+                char colour;
+                int lineNum;
+
+                ss >> factoryNum >> colour >> lineNum;
+                TileType tileType = charToTileType(colour);
+                factoryNum--;
+                lineNum--;
+
+                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
+                for (int i = 0; i < FACTORY_SIZE; i++)
+                {
+                    for (TileType tile : factories[factoryNum]->empty())
+                    {
+                        centerPile.push_back(tile);
+                    };
+                }
+
                 setPlayerTurn();
                 inputDone = true;
             }
@@ -85,7 +109,7 @@ void GameEngine::playRound()
                 menu->printMessage("Invalid input, try again");
             }
         } while (!inputDone);
-    }
+    } while (!factories_empty);
 }
 
 void GameEngine::setPlayerTurn(int playerIndex)
@@ -132,12 +156,12 @@ void GameEngine::fillBag(int seed)
     }
 }
 
-void GameEngine::fillBag(TileList* bag)
+void GameEngine::fillBag(TileList *bag)
 {
     this->bag = bag;
 }
 
-void GameEngine::fillLid(TileList* lid)
+void GameEngine::fillLid(TileList *lid)
 {
     this->lid = lid;
 }
@@ -179,20 +203,20 @@ void GameEngine::addPlayers()
 
 std::vector<TileType> GameEngine::getCenterPile()
 {
-return centerPile;
+    return centerPile;
 }
 
-TileList* GameEngine::getBag()
+TileList *GameEngine::getBag()
 {
-return bag;
+    return bag;
 }
 
-TileList* GameEngine::getLid()
+TileList *GameEngine::getLid()
 {
-return lid;
+    return lid;
 }
 
-Player* GameEngine::getPlayerTurnID()
+Player *GameEngine::getPlayerTurnID()
 {
     return playerTurnID;
 }

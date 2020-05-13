@@ -2,6 +2,7 @@
 #define FACTORY_H
 
 #include <string>
+#include <vector>
 #include "Types.h"
 
 using std::string;
@@ -12,7 +13,7 @@ public:
     Factory();
     Factory(TileType array[FACTORY_SIZE]);
     void fill(TileType array[FACTORY_SIZE]);
-    TileType *empty();
+    std::vector<TileType> empty();
     int draw(TileType tileType);
     string toString();
 

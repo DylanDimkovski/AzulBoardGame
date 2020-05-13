@@ -16,19 +16,19 @@ void Factory::fill(TileType arr[FACTORY_SIZE])
     }
 }
 
-TileType *Factory::empty()
+std::vector<TileType> Factory::empty()
 {
-    TileType array[4];
-    TileType *arrPtr = array;
+    std::vector<TileType> leftovers;
+
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
         if (tiles[i] != NOTILE)
         {
-            array[i] = tiles[i];
+            leftovers.push_back(tiles[i]);
             tiles[i] = NOTILE;
         }
     }
-    return arrPtr;
+    return leftovers;
 }
 
 int Factory::draw(TileType tileType)
@@ -47,12 +47,11 @@ int Factory::draw(TileType tileType)
 
 string Factory::toString()
 {
-    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
-
     string output = "";
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
-        output += toupper((char)tiles[i] + ' ');
+        output += tiles[i];
+        output += " ";
     }
 
     return output;

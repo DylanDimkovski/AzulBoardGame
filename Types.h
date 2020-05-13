@@ -20,5 +20,4 @@ enum TileType
     NOTILE = '.'
 };
 
-
 #endif

@@ -60,7 +60,7 @@ bool *Mosaic::getWallLine(int line)
     return wall[line];
 }
 
-TileList* Mosaic::getBrokenTiles()
+TileList *Mosaic::getBrokenTiles()
 {
     return brokenTiles;
 }
