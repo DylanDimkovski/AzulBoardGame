@@ -27,6 +27,7 @@ public:
     void shuffleBag();
 
 private:
+    void setPlayerTurn();
     std::vector<Player *> players;
     Factory *factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;

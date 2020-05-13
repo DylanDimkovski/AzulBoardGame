@@ -40,42 +40,60 @@ void GameEngine::playGame(char const *argv)
 
 void GameEngine::playRound()
 {
-    for (auto player : players)
+    for (int i = 0; i < NUM_FACTORIES; i++)
     {
-        if (player == playerTurnID)
+        int temp[4] = {NOTILE};
+
+        for (int j = 0; j < FACTORY_SIZE; j++)
         {
-            menu->roundStart(playerTurnID->getName());
-            menu->printFactory(&centerPile);
+            temp[j] = bag->getHead()->getValue();
+            bag->removeFront();
+        }
 
-            for (int i = 0; i < NUM_FACTORIES; i++)
+        factories[i]->fill(temp);
+    }
+    for (int i = 0; i < (int)players.size(); i++)
+    {
+        menu->roundStart(playerTurnID->getName());
+        menu->printFactory(&centerPile);
+        for (int i = 0; i < NUM_FACTORIES; i++)
+        {
+            menu->printFactory(i + 1, factories[i]->toString());
+        }
+        menu->printMosaic(playerTurnID);
+
+        bool inputDone = false;
+        do
+        {
+            string input = menu->getInput();
+            if (input.substr(0, 4) == "turn")
             {
-                int temp[4] = {NOTILE};
-
-                for (int j = 0; j < FACTORY_SIZE; j++)
-                {
-                    temp[j] = bag->getHead()->getValue();
-                    bag->removeFront();
-                }
-
-                factories[i]->fill(temp);
-                menu->printFactory(i + 1, factories[i]->toString());
+                //Handle turn input here and set next player as PlayerTurnID
+                setPlayerTurn();
+                inputDone = true;
             }
-            menu->printMosaic(playerTurnID);
-
-            bool inputDone = false;
-            do
+            else
             {
-                string input = menu->getInput();
-                if (input.substr(0, 4) == "turn")
-                {
-                    //Handle turn input here and set next player as PlayerTurnID
-                    inputDone = true;
-                }
-                else
-                {
-                    menu->printMessage("Invalid input, try again");
-                }
-            } while (!inputDone);
+                menu->printMessage("Invalid input, try again");
+            }
+        } while (!inputDone);
+    }
+}
+
+void GameEngine::setPlayerTurn()
+{
+    for (int i = 0; i < (int)players.size(); i++)
+    {
+        if (players[i] == playerTurnID)
+        {
+            if (i == (int)players.size() - 1)
+            {
+                playerTurnID = players[0];
+            }
+            else
+            {
+                playerTurnID = players[i + 1];
+            }
         }
     }
 }
