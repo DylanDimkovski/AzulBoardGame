@@ -30,47 +30,54 @@ void GameEngine::playGame(char const *argv)
     addPlayers();
     fillBag(argv[0]);
     playerTurnID = players[0];
-    int roundsPlayer = 0;
+    int roundsPlayed = 0;
     do
     {
         playRound();
-    } while (roundsPlayer < 1);
+        roundsPlayed++;
+    } while (roundsPlayed < 1);
 }
 
 void GameEngine::playRound()
 {
-    menu->roundStart(playerTurnID->getName());
-    menu->printFactory(&centerPile);
-
-    for (int i = 0; i < NUM_FACTORIES; i++)
+    for (auto player : players)
     {
-        int temp[4] = {NOTILE};
-
-        for (int j = 0; j < FACTORY_SIZE; j++)
+        if (player == playerTurnID)
         {
-            temp[j] = bag->getHead()->getValue();
-            bag->removeFront();
-        }
+            menu->roundStart(playerTurnID->getName());
+            menu->printFactory(&centerPile);
 
-        factories[i]->fill(temp);
-        menu->printFactory(i + 1, factories[i]->toString());
+            for (int i = 0; i < NUM_FACTORIES; i++)
+            {
+                int temp[4] = {NOTILE};
+
+                for (int j = 0; j < FACTORY_SIZE; j++)
+                {
+                    temp[j] = bag->getHead()->getValue();
+                    bag->removeFront();
+                }
+
+                factories[i]->fill(temp);
+                menu->printFactory(i + 1, factories[i]->toString());
+            }
+            menu->printMosaic(playerTurnID);
+
+            bool inputDone = false;
+            do
+            {
+                string input = menu->getInput();
+                if (input.substr(0, 4) == "turn")
+                {
+                    //Handle turn input here and set next player as PlayerTurnID
+                    inputDone = true;
+                }
+                else
+                {
+                    menu->printMessage("Invalid input, try again");
+                }
+            } while (!inputDone);
+        }
     }
-    menu->printMosaic(playerTurnID);
-
-    bool inputDone = false;
-    do
-    {
-        string input = menu->getInput();
-        if (input.substr(0, 4) == "turn")
-        {
-            //Handle turn input here
-            exit(0);
-        }
-        else
-        {
-            menu->printMessage("Invalid input, try again");
-        }
-    } while (!inputDone);
 }
 
 Factory *GameEngine::getFactory(int position)
