@@ -56,7 +56,21 @@ void GameEngine::playRound()
         menu->printFactory(i + 1, factories[i]->toString());
     }
     menu->printMosaic(playerTurnID);
-    menu->getInput();
+
+    bool inputDone = false;
+    do
+    {
+        string input = menu->getInput();
+        if (input.substr(0, 4) == "turn")
+        {
+            //Handle turn input here
+            exit(0);
+        }
+        else
+        {
+            menu->printMessage("Invalid input, try again");
+        }
+    } while (!inputDone);
 }
 
 Factory *GameEngine::getFactory(int position)
