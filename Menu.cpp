@@ -70,3 +70,31 @@ void Menu::printFactory(std::vector<TileType> *centerPile)
     }
     std::cout << std::endl;
 }
+
+void Menu::printMosaic(Player *player)
+{
+    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
+
+    std::cout << "Mosaic for " << player->getName() << std::endl;
+    for (int i = 0; i < NUMBER_OF_LINES; i++)
+    {
+        std::string output = "";
+        int lineSize = player->getMosaic()->getLine(i)->getMaxSize();
+        int numTiles = player->getMosaic()->getLine(i)->getNumTiles();
+
+        for (int i = 0; i < 5 - lineSize; i++)
+        {
+            output += "  ";
+        }
+
+        for (int i = 0; i < lineSize - numTiles; i++)
+        {
+            output += ". ";
+        }
+        for (int i = 0; i < numTiles; i++)
+        {
+            output += " " + colours[player->getMosaic()->getLine(i)->getTileType()];
+        }
+        std::cout << output << " || " << std::endl;
+    }
+}

@@ -6,21 +6,20 @@
 
 class Line
 {
-    public:
-        Line(int maxSize);
-        Line(int maxSize, int numTiles, TileType tileType);
-        int addTiles(int quantity, TileType tileType);
-        void removeTiles();
-        TileType getTileType();
-        bool hasTileType();
-        int getNumTiles();
-        int getMaxSize();
+public:
+    Line(int maxSize);
+    Line(int maxSize, int numTiles, TileType tileType);
+    int addTiles(int quantity, TileType tileType);
+    void removeTiles();
+    TileType getTileType();
+    bool hasTileType();
+    int getNumTiles();
+    int getMaxSize();
 
-    private:
-        int maxSize;
-        int numTiles;
-        TileType tileType;
+private:
+    int maxSize;
+    int numTiles;
+    TileType tileType;
 };
-
 
 #endif

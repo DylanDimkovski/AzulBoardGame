@@ -19,6 +19,7 @@ public:
     void roundStart(std::string playerName);
     void printFactory(int id, string contents);
     void printFactory(std::vector<TileType> *centerPile);
+    void printMosaic(Player *player);
 };
 
 #endif // !MENU_H

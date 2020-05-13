@@ -6,12 +6,12 @@ Player::Player(std::string name, int score) : Player(name, new Mosaic(), score)
 
 Player::Player(std::string name, Mosaic *mosaic, int score) : name(name), score(score)
 {
-    this->mosiac = mosaic;
+    this->mosaic = mosaic;
 }
 
 Player::~Player()
 {
-    delete mosiac;
+    delete mosaic;
 }
 
 std::string Player::getName()
@@ -27,4 +27,9 @@ int Player::getScore()
 void Player::calcScore()
 {
     // TODO implement
+}
+
+Mosaic *Player::getMosaic()
+{
+    return mosaic;
 }

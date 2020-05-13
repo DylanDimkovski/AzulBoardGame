@@ -30,7 +30,7 @@ private:
     std::vector<Player *> players;
     Factory *factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;
-    string playerTurnID;
+    Player *playerTurnID;
     TileList *bag;
     TileList *lid;
     Menu *menu;

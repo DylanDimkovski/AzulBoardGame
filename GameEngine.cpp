@@ -7,7 +7,6 @@
 GameEngine::GameEngine(Menu *menu) : players(),
                                      factories(),
                                      centerPile(),
-                                     playerTurnID("-1"),
                                      bag(new TileList()),
                                      lid(new TileList()),
                                      menu(menu)
@@ -30,13 +29,17 @@ void GameEngine::playGame(char const *argv)
 {
     addPlayers();
     fillBag(argv[0]);
-    playerTurnID = players[0]->getName();
-    playRound();
+    playerTurnID = players[0];
+    int roundsPlayer = 0;
+    do
+    {
+        playRound();
+    } while (roundsPlayer < 1);
 }
 
 void GameEngine::playRound()
 {
-    menu->roundStart(playerTurnID);
+    menu->roundStart(playerTurnID->getName());
     menu->printFactory(&centerPile);
 
     for (int i = 0; i < NUM_FACTORIES; i++)
@@ -52,6 +55,8 @@ void GameEngine::playRound()
         factories[i]->fill(temp);
         menu->printFactory(i + 1, factories[i]->toString());
     }
+    menu->printMosaic(playerTurnID);
+    menu->getInput();
 }
 
 Factory *GameEngine::getFactory(int position)

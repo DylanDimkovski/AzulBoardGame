@@ -42,3 +42,8 @@ void Mosaic::insertTilesIntoLine(int row, int quantity, TileType tileType)
         brokenTiles.addBack(tileType);
     }
 }
+
+Line *Mosaic::getLine(int line)
+{
+    return lines[line];
+}
