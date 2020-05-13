@@ -7,6 +7,7 @@
 #include "Menu.h"
 
 #include <string>
+#include <iostream>
 #include <vector>
 
 using std::string;
@@ -19,15 +20,14 @@ public:
     void playGame(char const *argv);
     void playRound();
     Player *addPlayer(string name);
-    Player *addPlayer(std::string name, int score, Mosaic* mosaic);
+    Player *addPlayer(std::string name, int score, Mosaic *mosaic);
     void addPlayers();
 
-    void fillBag(int argc, char** argv);
+    void fillBag(int argc, char **argv);
     void fillBag(TileList bag);
     void fillLid(TileList lid);
-    void fillFactories(Factory* factories[]);
+    void fillFactories(Factory *factories[]);
     void setPlayerTurn(int playerIndex);
-
 
     // Getters
     Factory *getFactory(int);

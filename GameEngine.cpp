@@ -71,7 +71,9 @@ void GameEngine::playRound()
             string input = menu->getInput();
             if (input.substr(0, 4) == "turn")
             {
-                //Handle turn input here and set next player as PlayerTurnID
+                int factoryNum = (int)input[6];
+                TileType colour;
+                int lineNum = (int)input[10];
                 setPlayerTurn();
                 inputDone = true;
             }
