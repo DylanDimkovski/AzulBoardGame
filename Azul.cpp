@@ -7,14 +7,14 @@ int main(int argc, char const *argv[])
     Menu menu;
     bool exit = false;
     std::string input;
-    GameEngine* engine = new GameEngine();
+    GameEngine *engine = new GameEngine(&menu);
     do
     {
         menu.printMenu();
         input = menu.getInput();
         if (input == "1")
         {
-            engine->playGame(argv[0]);            
+            engine->playGame(argv[0]);
         }
         else if (input == "3")
         {

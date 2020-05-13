@@ -4,6 +4,7 @@
 #include "Factory.h"
 #include "Player.h"
 #include "TileList.h"
+#include "Menu.h"
 
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ using std::string;
 class GameEngine
 {
 public:
-    GameEngine();
+    GameEngine(Menu *menu);
     ~GameEngine();
     void playGame(char const *argv);
     void playRound();
@@ -26,12 +27,13 @@ public:
     void shuffleBag();
 
 private:
-    std::vector<Player*> players;
-    Factory* factories[NUM_FACTORIES];
+    std::vector<Player *> players;
+    Factory *factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;
     string playerTurnID;
-    TileList* bag;
-    TileList* lid;
+    TileList *bag;
+    TileList *lid;
+    Menu *menu;
 };
 
 #endif

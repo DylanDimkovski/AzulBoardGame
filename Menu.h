@@ -3,8 +3,9 @@
 
 #include <string>
 #include <iostream>
-#include "Factory.h"
+#include <vector>
 #include "Player.h"
+#include "Menu.h"
 
 class Menu
 {
@@ -15,6 +16,9 @@ public:
     void printPlayer(Player player);
     void printCredits();
     void printMessage(std::string message);
+    void roundStart(std::string playerName);
+    void printFactory(int id, string contents);
+    void printFactory(std::vector<TileType> *centerPile);
 };
 
 #endif // !MENU_H

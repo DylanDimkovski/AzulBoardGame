@@ -42,6 +42,31 @@ void Menu::printCredits()
 void Menu::printMessage(std::string message)
 {
     std::cout << std::endl
-              << message << std::endl
+              << message
               << std::endl;
+}
+
+void Menu::roundStart(string playername)
+{
+    std::cout << "=== Start Round === \n";
+    std::cout << "TURN FOR PLAYER: " << playername << std::endl;
+    std::cout << "Factories: \n";
+}
+
+void Menu::printFactory(int id, string contents)
+{
+    std::cout << id << ": " << contents << std::endl;
+    std::cout << (id == 5 ? "\n" : "");
+}
+
+void Menu::printFactory(std::vector<TileType> *centerPile)
+{
+    std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
+
+    std::cout << "0: ";
+    for (auto tile : *centerPile)
+    {
+        std::cout << colours[tile] << " ";
+    }
+    std::cout << std::endl;
 }

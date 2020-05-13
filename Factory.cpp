@@ -47,14 +47,13 @@ int Factory::draw(int tileType)
 
 string Factory::toString()
 {
-    string output = "";
-
     std::string colours[7] = {"R", "Y", "B", "L", "U", "F", "."};
 
+    string output = "";
     for (int i = 0; i < FACTORY_SIZE; i++)
     {
         output += colours[tiles[i]] + ' ';
     }
-    
+
     return output;
 }
