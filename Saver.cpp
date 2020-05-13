@@ -1,12 +1,12 @@
 #include "Saver.h"
 
-bool Saver::save(GameEngine* gameEngine, std::string fileName)
+void Saver::save(GameEngine* gameEngine, std::string fileName)
 {
     std::ofstream outputStream(fileName);
     return save(gameEngine, outputStream);
 }
 
-bool Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
+void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 {
     outputStream << gameEngine->getRandomSeed() << std::endl;
     outputStream << (gameEngine->isPlayer1Turn() ? "true" : "false") << std::endl;
@@ -85,7 +85,7 @@ GameEngine* Saver::load(std::istream& inputStream)
     if (seedStream.good()) seedStream >> seed;
 
     // Check if it's player 1's turn
-    bool player1Turn;
+    bool player1Turn = true;
     std::istringstream player1TurnStream = getLineAsStream(inputStream);
     if (player1TurnStream.good())
     {
