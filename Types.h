@@ -20,4 +20,10 @@ enum TileType
     NOTILE = '.'
 };
 
+TileType Master_Wall[5][5]{DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
+                           LIGTHBLUE, DARKBLUE, YELLOW, RED, BLACK,
+                           BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED,
+                           RED, BLACK, LIGTHBLUE, DARKBLUE, YELLOW,
+                           YELLOW, RED, BLACK, LIGTHBLUE, DARKBLUE};
+
 #endif
