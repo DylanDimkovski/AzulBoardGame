@@ -16,10 +16,11 @@ public:
     void printPlayer(Player player);
     void printCredits();
     void printMessage(std::string message);
-    void roundStart(std::string playerName);
+    void handStart(std::string playerName);
     void printFactory(int id, string contents);
     void printFactory(std::vector<TileType> *centerPile);
     void printMosaic(Player *player);
+    void printScore(string name, int score);
 };
 
 #endif // !MENU_H

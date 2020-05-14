@@ -47,9 +47,8 @@ void Menu::printMessage(std::string message)
               << std::endl;
 }
 
-void Menu::roundStart(string playername)
+void Menu::handStart(string playername)
 {
-    std::cout << "=== Start Round === \n";
     std::cout << "TURN FOR PLAYER: " << playername << std::endl;
     std::cout << "Factories: \n";
 }
@@ -111,4 +110,9 @@ void Menu::printMosaic(Player *player)
         std::cout << output << std::endl;
     }
     std::cout << "broken: " << player->getMosaic()->getBrokenTiles()->toString() << std::endl;
+}
+
+void Menu::printScore(string name, int score)
+{
+    std::cout << name << " score: " << score << std::endl;
 }

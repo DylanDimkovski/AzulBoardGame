@@ -62,7 +62,8 @@ void GameEngine::playRound()
 
     do
     {
-        menu->roundStart(playerTurnID->getName());
+        menu->printMessage("=== Start Round ===");
+        menu->handStart(playerTurnID->getName());
         menu->printFactory(&centerPile);
         for (int i = 0; i < NUM_FACTORIES; i++)
         {
@@ -122,6 +123,14 @@ void GameEngine::playRound()
         } while (!inputDone);
         factories_empty = checkFactories();
     } while (!factories_empty);
+
+    //Distribute tiles to walls
+    menu->printMessage("=== END OF ROUND ===");
+    for (auto player : players)
+    {
+        player->calcScore();
+        menu->printScore(player->getName(), player->getScore());
+    }
 }
 
 bool GameEngine::checkFactories()
