@@ -120,7 +120,24 @@ void GameEngine::playRound()
                 menu->printMessage("Invalid input, try again");
             }
         } while (!inputDone);
+        factories_empty = checkFactories();
     } while (!factories_empty);
+}
+
+bool GameEngine::checkFactories()
+{
+    bool factoriesEmpty = false;
+    if (centerPile.empty())
+    {
+        for (int i = 0; i < NUM_FACTORIES; i++)
+        {
+            if (factories[i]->isEmpty())
+            {
+                factoriesEmpty = true;
+            }
+        }
+    }
+    return factoriesEmpty;
 }
 
 void GameEngine::setPlayerTurn(int playerIndex)
@@ -177,7 +194,6 @@ int GameEngine::drawFromCenter(TileType colour)
         {
             count++;
             centerPile.erase(centerPile.begin() + pos);
-            pos++;
         }
         else
         {

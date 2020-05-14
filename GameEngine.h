@@ -54,6 +54,7 @@ private:
     Menu *menu;
     int drawFromCenter(TileType colour);
     bool containsFirstPlayer();
+    bool checkFactories();
 };
 
 #endif

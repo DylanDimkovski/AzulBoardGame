@@ -28,6 +28,7 @@ std::vector<TileType> Factory::empty()
             tiles[i] = NOTILE;
         }
     }
+    clear = true;
     return leftovers;
 }
 
@@ -55,4 +56,9 @@ string Factory::toString()
     }
 
     return output;
+}
+
+bool Factory::isEmpty()
+{
+    return clear;
 }

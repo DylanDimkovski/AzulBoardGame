@@ -16,9 +16,11 @@ public:
     std::vector<TileType> empty();
     int draw(TileType tileType);
     string toString();
+    bool isEmpty();
 
 private:
     TileType tiles[FACTORY_SIZE];
+    bool clear;
 };
 
 #endif // !FACTORY_H
