@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <string>
+#include <iostream>
 #include <vector>
 #include "Mosaic.h"
 
@@ -17,7 +18,9 @@ public:
     Mosaic *getMosaic();
 
 private:
-    TileType scoreLine(int lineNum);
+    int scoreLine(int lineNum);
+    int calcRow(int index, int line);
+    int calcCol(int index, int line);
     std::string name;
     int score;
     Mosaic *mosaic;
