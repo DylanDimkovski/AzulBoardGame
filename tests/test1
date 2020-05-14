@@ -4,12 +4,11 @@ b
 turn 1 Y 2
 turn 2 R 2
 turn 3 B 3
-turn 4 U 3
-turn 5 R 1
+turn 5 B 3
+turn 4 R 1
 turn 0 U 3
 turn 0 L 4
-turn 0 U 1
-turn 0 B 5
-turn 0 B 4
-turn 0 R 4
-turn 0 Y 5
+turn 0 B 3
+turn 0 L 5
+turn 0 U 4
+4

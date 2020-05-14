@@ -128,7 +128,11 @@ void GameEngine::playRound()
     menu->printMessage("=== END OF ROUND ===");
     for (auto player : players)
     {
-        player->calcScore();
+        for (TileType tile : player->calcScore())
+        {
+            lid->addBack(tile);
+        }
+        menu->printMosaic(player);
         menu->printScore(player->getName(), player->getScore());
     }
 }

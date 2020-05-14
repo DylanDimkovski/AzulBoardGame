@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <string>
+#include <vector>
 #include "Mosaic.h"
 
 class Player
@@ -12,13 +13,19 @@ public:
     ~Player();
     std::string getName();
     int getScore();
-    void calcScore();
+    std::vector<TileType> calcScore();
     Mosaic *getMosaic();
 
 private:
+    TileType scoreLine(int lineNum);
     std::string name;
     int score;
     Mosaic *mosaic;
+    TileType master_wall[NUMBER_OF_LINES][NUMBER_OF_LINES] = {DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
+                                                              LIGTHBLUE, DARKBLUE, YELLOW, RED, BLACK,
+                                                              BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED,
+                                                              RED, BLACK, LIGTHBLUE, DARKBLUE, YELLOW,
+                                                              YELLOW, RED, BLACK, LIGTHBLUE, DARKBLUE};
 };
 
 #endif // !PLAYER_H

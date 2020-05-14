@@ -21,6 +21,13 @@ public:
     void printFactory(std::vector<TileType> *centerPile);
     void printMosaic(Player *player);
     void printScore(string name, int score);
+
+private:
+    TileType master_wall[NUMBER_OF_LINES][NUMBER_OF_LINES] = {DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
+                                                              LIGTHBLUE, DARKBLUE, YELLOW, RED, BLACK,
+                                                              BLACK, LIGTHBLUE, DARKBLUE, YELLOW, RED,
+                                                              RED, BLACK, LIGTHBLUE, DARKBLUE, YELLOW,
+                                                              YELLOW, RED, BLACK, LIGTHBLUE, DARKBLUE};
 };
 
 #endif // !MENU_H

@@ -98,9 +98,10 @@ void Menu::printMosaic(Player *player)
 
         for (int i = 0; i < NUMBER_OF_LINES; i++)
         {
-            if (player->getMosaic()->getWallLine(i)[i] == true)
+            if (player->getMosaic()->getWallLine(j)[i] == true)
             {
-                output += " P";
+                output += " ";
+                output += master_wall[j][i];
             }
             else
             {
