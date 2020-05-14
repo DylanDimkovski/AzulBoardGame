@@ -52,6 +52,8 @@ private:
     TileList *bag;
     TileList *lid;
     Menu *menu;
+    int drawFromCenter(TileType colour);
+    bool containsFirstPlayer();
 };
 
 #endif

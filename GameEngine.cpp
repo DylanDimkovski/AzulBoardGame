@@ -89,18 +89,29 @@ void GameEngine::playRound()
 
                 ss >> factoryNum >> colour >> lineNum;
                 TileType tileType = charToTileType(colour);
-                factoryNum--;
                 lineNum--;
 
-                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
-                for (int i = 0; i < FACTORY_SIZE; i++)
+                if (factoryNum == 0)
                 {
-                    for (TileType tile : factories[factoryNum]->empty())
+                    if (containsFirstPlayer())
                     {
-                        centerPile.push_back(tile);
-                    };
+                        playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                    }
+                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
                 }
+                else
+                {
+                    factoryNum--;
 
+                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
+                    for (int i = 0; i < FACTORY_SIZE; i++)
+                    {
+                        for (TileType tile : factories[factoryNum]->empty())
+                        {
+                            centerPile.push_back(tile);
+                        };
+                    }
+                }
                 setPlayerTurn();
                 inputDone = true;
             }
@@ -154,6 +165,37 @@ void GameEngine::fillBag(int seed)
     {
         bag->addBack(temp[i]);
     }
+}
+
+int GameEngine::drawFromCenter(TileType colour)
+{
+    int count = 0;
+    int pos = 0;
+    for (TileType tile : centerPile)
+    {
+        if (tile == colour)
+        {
+            count++;
+            centerPile.erase(centerPile.begin() + pos);
+            pos++;
+        }
+        else
+        {
+            pos++;
+        }
+    }
+    return count;
+}
+
+bool GameEngine::containsFirstPlayer()
+{
+    bool contains = false;
+    if (centerPile[0] == FIRSTPLAYER)
+    {
+        centerPile.erase(centerPile.begin());
+        contains = true;
+    }
+    return contains;
 }
 
 void GameEngine::fillBag(TileList *bag)

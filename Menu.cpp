@@ -110,4 +110,5 @@ void Menu::printMosaic(Player *player)
         }
         std::cout << output << std::endl;
     }
+    std::cout << "broken: " << player->getMosaic()->getBrokenTiles()->toString() << std::endl;
 }
