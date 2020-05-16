@@ -57,16 +57,16 @@ int Player::scoreLine(int lineNum)
                 mosaic->setFilled(lineNum, i, true);
 
                 int rowScore = calcRow(i, lineNum);
-                if (rowScore > 0)
+                if (rowScore > 1)
                 {
                     lineScore += rowScore;
                 }
                 int colScore = calcCol(i, lineNum);
-                if (colScore > 0)
+                if (colScore > 1)
                 {
                     lineScore += colScore;
                 }
-                if (lineScore == 0)
+                if (lineScore <= 1)
                 {
                     lineScore++;
                 }
@@ -78,7 +78,7 @@ int Player::scoreLine(int lineNum)
 
 int Player::calcRow(int index, int line)
 {
-    int score = 0;
+    int score = 1;
     int pos = index + 1;
 
     do
@@ -105,7 +105,7 @@ int Player::calcRow(int index, int line)
 
 int Player::calcCol(int index, int line)
 {
-    int score = 0;
+    int score = 1;
     int pos = line + 1;
 
     do
