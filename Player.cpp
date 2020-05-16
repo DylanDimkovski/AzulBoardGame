@@ -55,21 +55,9 @@ int Player::scoreLine(int lineNum)
             if (master_wall[lineNum][i] == tile)
             {
                 mosaic->setFilled(lineNum, i, true);
-
-                int rowScore = calcRow(i, lineNum);
-                if (rowScore > 1)
-                {
-                    lineScore += rowScore;
-                }
-                int colScore = calcCol(i, lineNum);
-                if (colScore > 1)
-                {
-                    lineScore += colScore;
-                }
-                if (lineScore <= 1)
-                {
-                    lineScore++;
-                }
+                lineScore += calcRow(i, lineNum);
+                lineScore += calcCol(i, lineNum);
+                ++lineScore;
             }
         }
     }
@@ -78,12 +66,12 @@ int Player::scoreLine(int lineNum)
 
 int Player::calcRow(int index, int line)
 {
-    int score = 1;
+    int score = 0;
     int pos = index + 1;
 
     do
     {
-        if (mosaic->isFilled(line, pos) == true)
+        if (mosaic->isFilled(line, pos))
         {
             ++score;
         }
@@ -93,7 +81,7 @@ int Player::calcRow(int index, int line)
     pos = index - 1;
     do
     {
-        if (mosaic->isFilled(line, pos) == true)
+        if (mosaic->isFilled(line, pos))
         {
             ++score;
         }
@@ -105,14 +93,14 @@ int Player::calcRow(int index, int line)
 
 int Player::calcCol(int index, int line)
 {
-    int score = 1;
+    int score = 0;
     int pos = line + 1;
 
     do
     {
-        if (mosaic->getWallLine(pos)[index] == true)
+        if (mosaic->isFilled(pos, index))
         {
-            score++;
+            ++score;
         }
         pos++;
     } while (pos + 1 < NUMBER_OF_LINES);
@@ -120,11 +108,11 @@ int Player::calcCol(int index, int line)
     pos = line - 1;
     do
     {
-        if (mosaic->getWallLine(pos)[index] == true)
+        if (mosaic->isFilled(pos, index))
         {
-            score++;
+            ++score;
         }
-        pos--;
+        --pos;
     } while (pos - 1 >= 0);
 
     return score;
