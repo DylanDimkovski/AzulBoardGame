@@ -83,21 +83,21 @@ int Player::calcRow(int index, int line)
 
     do
     {
-        if (mosaic->getWallLine(line)[pos] == true)
+        if (mosaic->isFilled(line, pos) == true)
         {
-            score++;
+            ++score;
         }
-        pos++;
+        ++pos;
     } while (pos + 1 < NUMBER_OF_LINES);
 
     pos = index - 1;
     do
     {
-        if (mosaic->getWallLine(line)[pos] == true)
+        if (mosaic->isFilled(line, pos) == true)
         {
-            score++;
+            ++score;
         }
-        pos--;
+        --pos;
     } while (pos - 1 >= 0);
 
     return score;
@@ -133,4 +133,20 @@ int Player::calcCol(int index, int line)
 Mosaic *Player::getMosaic()
 {
     return mosaic;
+}
+
+bool Player::hasWon()
+{
+    int line = 0;
+    bool hasWon = false;
+    while (!hasWon && line < NUMBER_OF_LINES)
+    {
+        int col = 0;
+        hasWon = true;
+        while (col < NUMBER_OF_LINES)
+        {
+            hasWon &= mosaic->isFilled(line, col);
+        }
+    }
+    return hasWon;
 }

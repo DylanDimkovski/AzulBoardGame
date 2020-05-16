@@ -16,6 +16,7 @@ public:
     int getScore();
     std::vector<TileType> calcScore();
     Mosaic *getMosaic();
+    bool hasWon();
 
 private:
     int scoreLine(int lineNum);
