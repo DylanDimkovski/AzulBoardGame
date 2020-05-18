@@ -36,31 +36,37 @@ void GameEngine::playGame(char const *argv)
     addPlayers();
     fillBag(argv[0]);
     playerTurnID = players[0];
+    playGame();
+}
+
+void GameEngine::playGame()
+{
     int roundsPlayed = 0;
-    do
+    while (!hasPlayerWon())
     {
         playRound();
-        roundsPlayed++;
-    } while (roundsPlayed < 1);
+        ++roundsPlayed;
+    }
 }
 
 void GameEngine::playRound()
 {
-    for (int i = 0; i < NUM_FACTORIES; i++)
+    if (factoriesAreEmpty())
     {
-        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
-
-        for (int j = 0; j < FACTORY_SIZE; j++)
+        for (int i = 0; i < NUM_FACTORIES; i++)
         {
-            temp[j] = bag->removeFront();
-        }
+            TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
 
-        factories[i]->fill(temp);
+            for (int j = 0; j < FACTORY_SIZE; j++)
+            {
+                temp[j] = bag->removeFront();
+            }
+
+            factories[i]->fill(temp);
+        }
     }
 
-    bool factories_empty = false;
-
-    do
+    while (!roundOver())
     {
         menu->printMessage("=== Start Round ===");
         menu->handStart(playerTurnID->getName());
@@ -74,9 +80,7 @@ void GameEngine::playRound()
         bool inputDone = false;
         do
         {
-            string input = menu->getInput();
-            std::stringstream ss;
-            ss << input;
+            std::stringstream ss(menu->getInput());
 
             string command;
 
@@ -90,7 +94,7 @@ void GameEngine::playRound()
 
                 ss >> factoryNum >> colour >> lineNum;
                 TileType tileType = charToTileType(colour);
-                lineNum--;
+                --lineNum;
 
                 if (factoryNum == 0)
                 {
@@ -102,7 +106,7 @@ void GameEngine::playRound()
                 }
                 else
                 {
-                    factoryNum--;
+                    --factoryNum;
 
                     playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
                     for (int i = 0; i < FACTORY_SIZE; i++)
@@ -110,19 +114,19 @@ void GameEngine::playRound()
                         for (TileType tile : factories[factoryNum]->empty())
                         {
                             centerPile.push_back(tile);
-                        };
+                        }
                     }
                 }
                 setPlayerTurn();
                 inputDone = true;
+                menu->printMessage("Turn successful.");
             }
             else
             {
                 menu->printMessage("Invalid input, try again");
             }
         } while (!inputDone);
-        factories_empty = checkFactories();
-    } while (!factories_empty);
+    }
 
     //Distribute tiles to walls
     menu->printMessage("=== END OF ROUND ===");
@@ -137,19 +141,17 @@ void GameEngine::playRound()
     }
 }
 
-bool GameEngine::checkFactories()
+bool GameEngine::roundOver()
 {
-    bool factoriesEmpty = false;
-    if (centerPile.empty())
-    {
-        for (int i = 0; i < NUM_FACTORIES; i++)
-        {
-            if (factories[i]->isEmpty())
-            {
-                factoriesEmpty = true;
-            }
-        }
-    }
+    return !centerPile.empty() || !factoriesAreEmpty();
+}
+
+// returns true if factories are empty
+bool GameEngine::factoriesAreEmpty()
+{
+    bool factoriesEmpty = true;
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+        factoriesEmpty &= factories[i]->isEmpty();
     return factoriesEmpty;
 }
 
@@ -237,6 +239,11 @@ void GameEngine::fillLid(TileList *lid)
     this->lid = lid;
 }
 
+void GameEngine::fillCenterPile(std::vector<TileType> centerPile)
+{
+    this->centerPile = centerPile;
+}
+
 void GameEngine::fillFactories(Factory *factories[])
 {
     for (int i = 0; i < FACTORY_SIZE; ++i)
@@ -261,9 +268,9 @@ void GameEngine::addPlayers()
 {
     //Checks for player names and adds them to player vector
 
-    menu->printMessage("Enter the name for player 1: \n");
+    menu->printMessage("Enter the name for player 1:");
     string name1 = menu->getInput();
-    menu->printMessage("Enter the name for player 2: \n");
+    menu->printMessage("Enter the name for player 2:");
     string name2 = menu->getInput();
 
     addPlayer(name1);
@@ -295,4 +302,13 @@ Player *GameEngine::getPlayerTurnID()
 Player *GameEngine::getPlayer(int playerIndex)
 {
     return players.at(playerIndex);
+}
+
+bool GameEngine::hasPlayerWon()
+{
+    bool playerWon = false;
+    unsigned int playerIndex = 0;
+    while (!playerWon && playerIndex < players.size())
+        playerWon = players.at(playerIndex++)->hasWon();
+    return playerWon;
 }
