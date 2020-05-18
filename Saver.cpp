@@ -225,15 +225,12 @@ Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
         }
     }
     
-    if (!lines[startingLine + 5].empty())
+    std::istringstream brokenTilesStream(lines[startingLine + 5]);
+    while (brokenTilesStream.good())
     {
-        std::istringstream brokenTilesStream(lines[startingLine + 5]);
-        while (brokenTilesStream.good())
-        {
-            char c;
-            brokenTilesStream >> c;
-            mosaic->addToBrokenTiles(1, charToTileType(c));
-        }
+        char c;
+        brokenTilesStream >> c;
+        mosaic->addToBrokenTiles(1, charToTileType(c));
     }
     
     std::istringstream wallStream(lines[startingLine + 6]);
