@@ -113,11 +113,12 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     // Create center factory
     std::vector<TileType> centerFactory;
     std::istringstream centerFactoryStream(lines[5]);
-    while (centerFactoryStream.good())
+    char c;
+    while (centerFactoryStream.get(c))
     {
-        char c;
-        centerFactoryStream >> c;
-        centerFactory.push_back(charToTileType(c));
+        TileType toAdd = charToTileType(c);
+        if (toAdd != NOTILE)
+            centerFactory.push_back(toAdd);
     }
     
     // Create all factories
