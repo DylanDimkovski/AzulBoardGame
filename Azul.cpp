@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
         }
         else if (input == "4")
         {
-            return 0;
+            exit = true;
         }
         else
         {
