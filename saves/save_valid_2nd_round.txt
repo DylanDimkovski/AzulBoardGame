@@ -1,4 +1,3 @@
-284593		
 false		
 player1 	
 1		
