@@ -25,7 +25,6 @@ std::vector<TileType> Factory::empty()
             tiles[i] = NOTILE;
         }
     }
-    clear = true;
     return leftovers;
 }
 
@@ -57,5 +56,8 @@ string Factory::toString()
 
 bool Factory::isEmpty()
 {
-    return clear;
+    bool isEmpty = false;
+    for (int i = 0; i < FACTORY_SIZE; ++i)
+        isEmpty |= tiles[i] == NOTILE;
+    return isEmpty;
 }
