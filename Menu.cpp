@@ -2,18 +2,18 @@
 
 void Menu::printMenu()
 {
-    std::cout << "Menu" << std::endl;
-    std::cout << "----" << std::endl;
-    std::cout << "1. New Game" << std::endl;
-    std::cout << "2. Load Game" << std::endl;
-    std::cout << "3. Credits" << std::endl;
-    std::cout << "4. Quit" << std::endl;
+    std::cout << "Menu" << std::endl
+    << "----" << std::endl
+    << "1. New Game" << std::endl
+    << "2. Load Game" << std::endl
+    << "3. Credits" << std::endl
+    << "4. Quit" << std::endl
+    << std::endl;
 }
 std::string Menu::getInput()
 {
     std::string input;
-    std::cout << std::endl
-              << "> ";
+    std::cout << "> ";
     std::getline(std::cin, input);
     std::cout << input << std::endl;
     return input;
