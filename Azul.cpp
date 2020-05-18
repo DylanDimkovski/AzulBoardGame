@@ -7,13 +7,14 @@ int main(int argc, char const *argv[])
     Menu menu;
     bool exit = false;
     std::string input;
-    GameEngine *engine = new GameEngine(&menu);
+    GameEngine *engine = nullptr;
     do
     {
         menu.printMenu();
         input = menu.getInput();
         if (input == "1")
         {
+            engine = new GameEngine(&menu);
             engine->playGame(argv[0]);
         }
         else if (input == "3")
@@ -29,6 +30,8 @@ int main(int argc, char const *argv[])
             menu.printMessage("Invalid input, try again");
         }
     } while (!exit);
+
+    delete engine;
 
     return 0;
 }
