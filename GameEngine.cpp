@@ -12,8 +12,6 @@ GameEngine::GameEngine(Menu *menu) : players(),
                                      menu(menu)
 {
 
-    centerPile.push_back(FIRSTPLAYER);
-
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
         TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
@@ -37,15 +35,17 @@ void GameEngine::playGame(char const *argv)
     fillBag(argv[0]);
     playerTurnID = players[0];
     int roundsPlayed = 0;
+
     do
     {
         playRound();
         roundsPlayed++;
-    } while (roundsPlayed < 1);
+    } while (true);
 }
 
 void GameEngine::playRound()
 {
+    centerPile.push_back(FIRSTPLAYER);
     for (int i = 0; i < NUM_FACTORIES; i++)
     {
         TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
@@ -126,13 +126,18 @@ void GameEngine::playRound()
 
     //Distribute tiles to walls
     menu->printMessage("=== END OF ROUND ===");
+
     for (auto player : players)
     {
+        if (player->hasFirstPlayer())
+        {
+            playerTurnID = player;
+        }
+
         for (TileType tile : player->calcScore())
         {
             lid->addBack(tile);
         }
-        menu->printMosaic(player);
         menu->printScore(player->getName(), player->getScore());
     }
 }

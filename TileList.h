@@ -7,21 +7,21 @@
 
 class TileList
 {
-    public:
-        TileList();
-        ~TileList();
-        int size();
-        void clear();
-        void addFront(TileType tile);
-        void addBack(TileType tile);
-        TileType removeFront();
-        TileType removeBack();
-        std::string toString();
+public:
+    TileList();
+    ~TileList();
+    int size();
+    void clear();
+    void addFront(TileType tile);
+    void addBack(TileType tile);
+    TileType removeFront();
+    TileType removeBack();
+    std::string toString();
+    Node *head;
 
-    private:
-        Node* head;
-        Node* tail;
-        int length;
+private:
+    Node *tail;
+    int length;
 };
 
 #endif

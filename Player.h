@@ -17,9 +17,11 @@ public:
     std::vector<TileType> calcScore();
     Mosaic *getMosaic();
     bool hasWon();
+    bool hasFirstPlayer();
 
 private:
-    int scoreLine(int lineNum);
+    int
+    scoreLine(int lineNum);
     int calcRow(int index, int line);
     int calcCol(int index, int line);
     std::string name;

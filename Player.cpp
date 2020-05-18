@@ -33,10 +33,34 @@ std::vector<TileType> Player::calcScore()
         if (lineScore > 0)
         {
             TileType tile = getMosaic()->getLine(i)->getTileType();
-            toLid.push_back(tile);
+            for (int j = 0; j < getMosaic()->getLine(i)->getMaxSize() - 1; j++)
+            {
+                toLid.push_back(tile);
+            }
             score += lineScore;
         }
     }
+    for (int i = 0; i < mosaic->getBrokenTiles()->size(); i++)
+    {
+        if (i <= 1)
+        {
+            score--;
+        }
+        else if (i <= 4)
+        {
+            score -= 2;
+        }
+        else
+        {
+            score -= 3;
+        }
+        TileType tile = mosaic->getBrokenTiles()->removeFront();
+        if (tile != FIRSTPLAYER)
+        {
+            toLid.push_back(tile);
+        }
+    }
+
     return toLid;
 }
 
@@ -137,4 +161,14 @@ bool Player::hasWon()
         }
     }
     return hasWon;
+}
+
+bool Player::hasFirstPlayer()
+{
+    bool ret = false;
+    if (mosaic->getBrokenTiles()->size() != 0 && mosaic->getBrokenTiles()->head->getValue() == FIRSTPLAYER)
+    {
+        ret = true;
+    }
+    return ret;
 }
