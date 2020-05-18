@@ -2,10 +2,7 @@
 
 Factory::Factory(TileType arr[FACTORY_SIZE])
 {
-    for (int i = 0; i < FACTORY_SIZE; i++)
-    {
-        tiles[i] = arr[i];
-    }
+    fill(arr);
 }
 
 void Factory::fill(TileType arr[FACTORY_SIZE])
