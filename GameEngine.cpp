@@ -143,15 +143,19 @@ void GameEngine::playRound()
 
 bool GameEngine::roundOver()
 {
-    return !centerPile.empty() || !factoriesAreEmpty();
+    // centerPile.empty() && factoriesAreEmpty(); equivalent but less efficient
+    return !(!centerPile.empty() || !factoriesAreEmpty());
 }
 
 // returns true if factories are empty
 bool GameEngine::factoriesAreEmpty()
 {
     bool factoriesEmpty = true;
-    for (int i = 0; i < NUM_FACTORIES; ++i)
-        factoriesEmpty &= factories[i]->isEmpty();
+    int factoryIndex = 0;
+    while (factoriesEmpty && factoryIndex < NUM_FACTORIES)
+    {
+        factoriesEmpty &= factories[factoryIndex++]->isEmpty();
+    }
     return factoriesEmpty;
 }
 
