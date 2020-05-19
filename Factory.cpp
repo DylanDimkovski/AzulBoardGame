@@ -61,3 +61,12 @@ bool Factory::isEmpty()
         isEmpty |= tiles[i] == NOTILE;
     return isEmpty;
 }
+
+bool Factory::contains(TileType tileType)
+{
+    bool doesContain = false;
+    int tileIndex = 0;
+    while (!doesContain && tileIndex < FACTORY_SIZE)
+        doesContain = tiles[tileIndex] == tileType;
+    return doesContain;
+}
