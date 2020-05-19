@@ -44,7 +44,7 @@ void GameEngine::playGame()
     while (!hasPlayerWon())
     {
         playRound();
-        ++roundsPlayed;
+        roundsPlayed++;
     }
 }
 
@@ -112,17 +112,19 @@ void GameEngine::playRound()
                     }
                     else
                     {
+
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
                             if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
-                                for (int i = 0; i < FACTORY_SIZE; i++)
+
+                                for (TileType tile : factories[factoryNum]->empty())
                                 {
-                                    for (TileType tile : factories[factoryNum]->empty())
-                                        centerPile.push_back(tile);
+                                    centerPile.push_back(tile);
                                 }
+
                                 inputDone = true;
                             }
                         }
@@ -147,7 +149,8 @@ void GameEngine::playRound()
                     inputDone = true;
                 }
             }
-            if (!inputDone) menu->printMessage("Invalid input, try again");
+            if (!inputDone)
+                menu->printMessage("Invalid input, try again");
         } while (!inputDone);
     }
 
@@ -178,7 +181,6 @@ bool GameEngine::validFactoryNum(int factoryNum)
 {
     return factoryNum >= 0 && factoryNum < NUM_FACTORIES;
 }
-
 
 bool GameEngine::roundOver()
 {

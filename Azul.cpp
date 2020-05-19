@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "Saver.h"
 #include "Menu.h"
 #include "Saver.h"
 
@@ -25,7 +26,8 @@ int main(int argc, char const *argv[])
             menu.printMessage("Enter the filename from which load a game");
             std::string fileName = menu.getInput();
             engine = saver.load(fileName, &menu);
-            if (engine != nullptr) engine->playGame();
+            if (engine != nullptr)
+                engine->playGame();
         }
         else if (input == "3")
         {
