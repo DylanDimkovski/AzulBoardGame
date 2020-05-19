@@ -11,7 +11,7 @@ Line::Line(int maxSize, int numTiles, TileType tileType) : maxSize(maxSize), num
 int Line::addTiles(int quantity, TileType tileType)
 {
     int overflow = 0;
-    if (!hasTileType() || getTileType() == tileType)
+    if (canAddTiles(tileType))
     {
         this->tileType = tileType;
         numTiles += quantity;
@@ -33,11 +33,6 @@ void Line::removeTiles()
 TileType Line::getTileType()
 {
     return tileType;
-}
-
-bool Line::hasTileType()
-{
-    return tileType != NOTILE && tileType != FIRSTPLAYER;
 }
 
 int Line::getNumTiles()
@@ -62,4 +57,9 @@ std::string Line::toString()
         result += char(tileType);
     }
     return result;
+}
+
+bool Line::canAddTiles(TileType tileType)
+{
+    return this->tileType == NOTILE || this->tileType == tileType;
 }
