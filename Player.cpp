@@ -153,14 +153,9 @@ bool Player::hasWon()
     bool hasWon = false;
     while (!hasWon && line < NUMBER_OF_LINES)
     {
-        int col = 0;
         hasWon = true;
-        while (col < NUMBER_OF_LINES)
-        {
-            hasWon &= mosaic->isFilled(line, col);
-            col++;
-        }
-        line++;
+        for (int col = 0; col < NUMBER_OF_LINES; ++col)
+            hasWon &= mosaic->isFilled(line++, col);
     }
     return hasWon;
 }

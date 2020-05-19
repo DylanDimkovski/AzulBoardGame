@@ -17,10 +17,10 @@ public:
     int draw(TileType tileType);
     string toString();
     bool isEmpty();
+    bool contains(TileType tileType);
 
 private:
     TileType tiles[FACTORY_SIZE];
-    bool clear;
 };
 
 #endif // !FACTORY_H

@@ -2,10 +2,7 @@
 
 Factory::Factory(TileType arr[FACTORY_SIZE])
 {
-    for (int i = 0; i < FACTORY_SIZE; i++)
-    {
-        tiles[i] = arr[i];
-    }
+    fill(arr);
 }
 
 void Factory::fill(TileType arr[FACTORY_SIZE])
@@ -28,7 +25,6 @@ std::vector<TileType> Factory::empty()
             tiles[i] = NOTILE;
         }
     }
-    clear = true;
     return leftovers;
 }
 
@@ -60,5 +56,17 @@ string Factory::toString()
 
 bool Factory::isEmpty()
 {
-    return clear;
+    bool isEmpty = false;
+    for (int i = 0; i < FACTORY_SIZE; ++i)
+        isEmpty |= tiles[i] == NOTILE;
+    return isEmpty;
+}
+
+bool Factory::contains(TileType tileType)
+{
+    bool doesContain = false;
+    int tileIndex = 0;
+    while (!doesContain && tileIndex < FACTORY_SIZE)
+        doesContain = tiles[tileIndex] == tileType;
+    return doesContain;
 }

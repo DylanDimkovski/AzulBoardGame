@@ -2,18 +2,18 @@
 
 void Menu::printMenu()
 {
-    std::cout << "Menu" << std::endl;
-    std::cout << "----" << std::endl;
-    std::cout << "1. New Game" << std::endl;
-    std::cout << "2. Load Game" << std::endl;
-    std::cout << "3. Credits" << std::endl;
-    std::cout << "4. Quit" << std::endl;
+    std::cout << "Menu" << std::endl
+    << "----" << std::endl
+    << "1. New Game" << std::endl
+    << "2. Load Game" << std::endl
+    << "3. Credits" << std::endl
+    << "4. Quit" << std::endl
+    << std::endl;
 }
 std::string Menu::getInput()
 {
     std::string input;
-    std::cout << std::endl
-              << "> ";
+    std::cout << "> ";
     std::getline(std::cin, input);
     std::cout << input << std::endl;
     return input;
@@ -26,17 +26,19 @@ void Menu::printPlayer(Player player)
 }
 void Menu::printCredits()
 {
-    std::cout << "Name: Luca Cave" << std::endl;
-    std::cout << "Student ID: s3787946" << std::endl;
-    std::cout << "Email: s3787946@student.rmit.edu.au" << std::endl
-              << std::endl;
-    std::cout << "Name: Michael Sartorel" << std::endl;
-    std::cout << "Student ID: s3786267" << std::endl;
-    std::cout << "Email: s3786267@student.rmit.edu.au" << std::endl
-              << std::endl;
-    std::cout << "Name: Dylan Dimkovski" << std::endl;
-    std::cout << "Student ID: s3717379" << std::endl;
-    std::cout << "Email: s3717379@student.rmit.edu.au" << std::endl
+    std::cout << std::endl << "----------------------------------" << std::endl
+    << "Name: Luca Cave" << std::endl
+    << "Student ID: s3787946" << std::endl
+    << "Email: s3787946@student.rmit.edu.au" << std::endl
+              << std::endl
+    << "Name: Michael Sartorel" << std::endl
+    << "Student ID: s3786267" << std::endl
+    << "Email: s3786267@student.rmit.edu.au" << std::endl
+              << std::endl
+    << "Name: Dylan Dimkovski" << std::endl
+    << "Student ID: s3717379" << std::endl
+    << "Email: s3717379@student.rmit.edu.au" << std::endl
+    << "----------------------------------" << std::endl
               << std::endl;
 }
 
