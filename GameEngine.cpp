@@ -363,6 +363,6 @@ bool GameEngine::centerPileContains(TileType tileType)
     bool centerPileContainsTile = false;
     unsigned int index = 0;
     while (!centerPileContainsTile && index < centerPile.size())
-        centerPileContainsTile = centerPile.at(index) == tileType;
+        centerPileContainsTile = centerPile.at(index++) == tileType;
     return centerPileContainsTile;
 }
