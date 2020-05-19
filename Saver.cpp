@@ -127,9 +127,9 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     {
         // Create a single factory
         TileType tiles[FACTORY_SIZE] = {NOTILE, NOTILE, NOTILE, NOTILE};
-        std::istringstream factoryStream(lines[6 + i]);
         if (!lines[6 + i].empty())
         {
+            std::istringstream factoryStream(lines[6 + i]);
             for (int j = 0; j < FACTORY_SIZE; ++j)
             {
                 if (factoryStream.good())
