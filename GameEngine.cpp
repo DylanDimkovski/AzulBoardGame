@@ -172,12 +172,12 @@ void GameEngine::playRound()
 
 bool GameEngine::validLineNum(int lineNum)
 {
-    return lineNum >=0 && lineNum < NUMBER_OF_LINES;
+    return lineNum >= 0 && lineNum < NUMBER_OF_LINES;
 }
 
 bool GameEngine::validFactoryNum(int factoryNum)
 {
-    return factoryNum < 0 && factoryNum > NUM_FACTORIES;
+    return factoryNum >= 0 && factoryNum < NUM_FACTORIES;
 }
 
 
