@@ -195,9 +195,9 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
 
 void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
 {
-    for (int row = 0; NUMBER_OF_LINES; ++row)
+    for (int row = 0; row < NUMBER_OF_LINES; ++row)
     {
-        for (int col = 0; NUMBER_OF_LINES; ++col)
+        for (int col = 0; col < NUMBER_OF_LINES; ++col)
         {
             if (mosaic->isFilled(row, col))
                 outputStream << char(Master_Wall[row][col]);
