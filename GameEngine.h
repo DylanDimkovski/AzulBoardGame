@@ -20,6 +20,7 @@ public:
     GameEngine(Menu *menu);
     ~GameEngine();
     void playGame(char const *argv);
+    void playGame();
     void playRound();
     Player *addPlayer(string name);
     Player *addPlayer(std::string name, int score, Mosaic *mosaic);
@@ -28,6 +29,7 @@ public:
     void fillBag(int argc, char **argv);
     void fillBag(TileList *bag);
     void fillLid(TileList *lid);
+    void fillCenterPile(std::vector<TileType> centerPile);
     void fillFactories(Factory *factories[]);
     void setPlayerTurn(int playerIndex);
 
@@ -45,6 +47,12 @@ public:
 
 private:
     void setPlayerTurn();
+    bool hasPlayerWon();
+    int drawFromCenter(TileType colour);
+    bool containsFirstPlayer();
+    bool roundOver();
+    bool factoriesAreEmpty();
+
     std::vector<Player *> players;
     Factory *factories[NUM_FACTORIES];
     std::vector<TileType> centerPile;
@@ -52,9 +60,6 @@ private:
     TileList *bag;
     TileList *lid;
     Menu *menu;
-    int drawFromCenter(TileType colour);
-    bool containsFirstPlayer();
-    bool checkFactories();
 };
 
 #endif

@@ -69,22 +69,22 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
     outputStream.close();
 }
 
-GameEngine* Saver::load(std::string fileName)
+GameEngine* Saver::load(std::string fileName, Menu* menu)
 {
     std::ifstream inputStream(fileName);
-    return load(inputStream);
+    return load(inputStream, menu);
 }
 
 
-GameEngine* Saver::load(std::istream& inputStream)
+GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
 {
-    GameEngine* gameEngine = new GameEngine(new Menu());
-    // int currentLine = 0;
-    // std::string lines[28];
-    // while (inputStream.good() && currentLine < 28)
-    // {
-    //     std::getline(inputStream, lines[currentLine++]);
-    // }
+    GameEngine* gameEngine = new GameEngine(menu);
+    int currentLine = 0;
+    std::string lines[27];
+    while (inputStream.good() && currentLine < 27)
+    {
+        std::getline(inputStream, lines[currentLine++]);
+    }
 
 
     // // Get seed
@@ -94,7 +94,7 @@ GameEngine* Saver::load(std::istream& inputStream)
 
     // Check if it's player 1's turn
     bool player1Turn = true;
-    std::istringstream player1TurnStream = getLineAsStream(inputStream);
+    std::istringstream player1TurnStream(lines[0]);
     if (player1TurnStream.good())
     {
         std::string value;
@@ -103,29 +103,22 @@ GameEngine* Saver::load(std::istream& inputStream)
     }
 
     // player 1
-    std::string player1Name;
-    int player1Score;
-    // Get player 1 name
-    std::getline(inputStream, player1Name);
-    // Get player 1 score
-    inputStream >> player1Score;
+    std::string player1Name = lines[1];
+    int player1Score = std::stoi(lines[2]);
 
     // player 2
-    std::string player2Name;
-    int player2Score;
-    // Get player 2 name
-    std::getline(inputStream, player2Name);
-    // Get player 2 score
-    inputStream >> player2Score;
+    std::string player2Name = lines[3];
+    int player2Score = std::stoi(lines[4]);
 
     // Create center factory
     std::vector<TileType> centerFactory;
-    std::istringstream centerFactoryStream = getLineAsStream(inputStream);
-    while (centerFactoryStream.good())
+    std::istringstream centerFactoryStream(lines[5]);
+    char c;
+    while (centerFactoryStream.get(c))
     {
-        char c;
-        centerFactoryStream >> c;
-        centerFactory.push_back(charToTileType(c));
+        TileType toAdd = charToTileType(c);
+        if (toAdd != NOTILE)
+            centerFactory.push_back(toAdd);
     }
     
     // Create all factories
@@ -133,29 +126,32 @@ GameEngine* Saver::load(std::istream& inputStream)
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         // Create a single factory
-        TileType tiles[FACTORY_SIZE];
-        std::istringstream factoryStream = getLineAsStream(inputStream);
-        for (int j = 0; j < FACTORY_SIZE; ++j)
+        TileType tiles[FACTORY_SIZE] = {NOTILE, NOTILE, NOTILE, NOTILE};
+        if (!lines[6 + i].empty())
         {
-            if (factoryStream.good())
+            std::istringstream factoryStream(lines[6 + i]);
+            for (int j = 0; j < FACTORY_SIZE; ++j)
             {
-                char c;
-                factoryStream >> c;
-                tiles[j] = charToTileType(c);
+                if (factoryStream.good())
+                {
+                    char c;
+                    factoryStream >> c;
+                    tiles[j] = charToTileType(c);
+                }
             }
         }
-        factories[i]->fill(tiles);
+        factories[i] = new Factory(tiles);
     }
 
     // Create player 1 mosaic
-    Mosaic* player1mosaic = generateMosiac(inputStream);
+    Mosaic* player1mosaic = generateMosiac(lines, 11);
 
     // Create player 2 mosaic
-    Mosaic* player2mosaic = generateMosiac(inputStream);
+    Mosaic* player2mosaic = generateMosiac(lines, 18);
 
     // Create lid
     TileList* lid = new TileList();
-    std::istringstream lidStream = getLineAsStream(inputStream);
+    std::istringstream lidStream(lines[25]);
     while (lidStream.good())
     {
         char c;
@@ -169,7 +165,7 @@ GameEngine* Saver::load(std::istream& inputStream)
 
     // Create bag
     TileList* bag = new TileList();
-    std::istringstream bagStream = getLineAsStream(inputStream);
+    std::istringstream bagStream(lines[26]);
     while (bagStream.good())
     {
         char c;
@@ -188,6 +184,8 @@ GameEngine* Saver::load(std::istream& inputStream)
     gameEngine->fillLid(lid);
 
     gameEngine->fillFactories(factories);
+
+    gameEngine->fillCenterPile(centerFactory);
 
     if (player1Turn) gameEngine->setPlayerTurn(0);
     else gameEngine->setPlayerTurn(1);
@@ -210,15 +208,16 @@ void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
     outputStream << std::endl;
 }
 
-Mosaic* Saver::generateMosiac(std::istream& inputStream)
+Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
 {
     Mosaic* mosaic = new Mosaic();
     char c;
-    for (int i = 1; i <= NUMBER_OF_LINES; ++i)
-    {
-        for (int j = 0; j < i; ++j)
+    for (int i = 0; i < NUMBER_OF_LINES; ++i)
+    {   
+        std::istringstream lineStream(lines[startingLine + i]);
+        for (int j = 0; j < i+1; ++j)
         {
-            inputStream >> c;
+            lineStream >> c;
             TileType toAdd = charToTileType(c);
             if (toAdd != NOTILE && toAdd != FIRSTPLAYER)
             {
@@ -227,7 +226,7 @@ Mosaic* Saver::generateMosiac(std::istream& inputStream)
         }
     }
     
-    std::istringstream brokenTilesStream = getLineAsStream(inputStream);
+    std::istringstream brokenTilesStream(lines[startingLine + 5]);
     while (brokenTilesStream.good())
     {
         char c;
@@ -235,7 +234,7 @@ Mosaic* Saver::generateMosiac(std::istream& inputStream)
         mosaic->addToBrokenTiles(1, charToTileType(c));
     }
     
-    std::istringstream wallStream = getLineAsStream(inputStream);
+    std::istringstream wallStream(lines[startingLine + 6]);
     for (int row = 0; row < NUMBER_OF_LINES; ++row)
     {
         for (int col = 0; col < NUMBER_OF_LINES; ++col)
@@ -250,14 +249,6 @@ Mosaic* Saver::generateMosiac(std::istream& inputStream)
 
     return mosaic;
 }
-
-std::istringstream Saver::getLineAsStream(std::istream& inputStream)
-{
-    std::string line;
-    std::getline(inputStream, line);
-    return std::istringstream(line);
-}
-
 
 char Saver::tileTypeToLower(TileType tileType)
 {

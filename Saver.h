@@ -17,15 +17,14 @@ class Saver
 {
     public:
         void save(GameEngine* gameEngine, std::string fileName);
-        GameEngine* load(std::string fileName);
+        GameEngine* load(std::string fileName, Menu* menu);
 
     private:
         void save(GameEngine* gameEngine, std::ofstream& outputStream);
-        GameEngine* load(std::istream& inputStream);
+        GameEngine* load(std::istream& inputStream, Menu* menu);
         void outputWall(std::ofstream& outputStream, Mosaic* mosaic);
         char tileTypeToLower(TileType tileType);
-        Mosaic* generateMosiac(std::istream& inputStream);
-        std::istringstream getLineAsStream(std::istream& inputStream);
+        Mosaic* generateMosiac(std::string lines[28], int startingLine);
 };
 
 #endif

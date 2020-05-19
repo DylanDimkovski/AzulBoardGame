@@ -20,7 +20,6 @@ public:
 
 private:
     TileType tiles[FACTORY_SIZE];
-    bool clear;
 };
 
 #endif // !FACTORY_H

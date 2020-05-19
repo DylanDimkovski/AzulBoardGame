@@ -44,9 +44,10 @@ void Mosaic::insertTilesIntoLine(int row, int quantity, TileType tileType)
 
 void Mosaic::addToBrokenTiles(int quantity, TileType tileType)
 {
-    for (int i = 0; i < quantity; ++i)
+    if (tileType != NOTILE)
     {
-        brokenTiles->addBack(tileType);
+        for (int i = 0; i < quantity; ++i)
+            brokenTiles->addBack(tileType);
     }
 }
 
