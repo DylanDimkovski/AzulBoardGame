@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 
+#include "Saver.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -100,7 +101,7 @@ void GameEngine::playRound()
                     {
                         if (!centerPile.empty() && centerPileContains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
                                 if (containsFirstPlayer())
                                     playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
@@ -114,15 +115,13 @@ void GameEngine::playRound()
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
                                 for (int i = 0; i < FACTORY_SIZE; i++)
                                 {
                                     for (TileType tile : factories[factoryNum]->empty())
-                                    {
                                         centerPile.push_back(tile);
-                                    }
                                 }
                                 inputDone = true;
                             }
@@ -143,8 +142,8 @@ void GameEngine::playRound()
                 {
                     ss >> fileName;
                     // save file
-                    // Saver saver;
-                    // saver.save(this, fileName);
+                    Saver saver;
+                    saver.save(this, fileName);
                     inputDone = true;
                 }
             }
