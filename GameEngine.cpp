@@ -40,7 +40,7 @@ void GameEngine::playGame(char const *argv)
     {
         playRound();
         roundsPlayed++;
-    } while (true);
+    } while (!playerTurnID->hasWon());
 }
 
 void GameEngine::playRound()
