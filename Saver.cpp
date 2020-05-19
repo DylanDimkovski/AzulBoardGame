@@ -53,7 +53,7 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 
     // Player 2 mosiac
     Mosaic* player2Mosaic = gameEngine->getPlayer(1)->getMosaic();
-    for (int i = 1; i <= NUMBER_OF_LINES; ++i)
+    for (int i = 0; i < NUMBER_OF_LINES; ++i)
     {
         outputStream << player2Mosaic->getLine(i)->toString() << std::endl;
     }
