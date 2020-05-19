@@ -111,19 +111,20 @@ void GameEngine::playRound()
                     }
                     else
                     {
+
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE ||
+                                playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
                             {
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
-                                for (int i = 0; i < FACTORY_SIZE; i++)
+
+                                for (TileType tile : factories[factoryNum]->empty())
                                 {
-                                    for (TileType tile : factories[factoryNum]->empty())
-                                    {
-                                        centerPile.push_back(tile);
-                                    }
+                                    centerPile.push_back(tile);
                                 }
+
                                 inputDone = true;
                             }
                         }
