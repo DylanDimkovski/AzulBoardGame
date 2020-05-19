@@ -52,6 +52,9 @@ private:
     bool containsFirstPlayer();
     bool roundOver();
     bool factoriesAreEmpty();
+    bool centerPileContains(TileType tileType);
+    bool validLineNum(int lineNum);
+    bool validFactoryNum(int factoryNum);
 
     std::vector<Player *> players;
     Factory *factories[NUM_FACTORIES];
