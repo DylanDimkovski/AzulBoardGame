@@ -148,6 +148,9 @@ void GameEngine::playRound()
                     saver.save(this, fileName);
                     inputDone = true;
                 }
+
+                if (inputDone)
+                    menu->printMessage("Game successfully saved to '"+fileName+"'");
             }
             if (!inputDone)
                 menu->printMessage("Invalid input, try again");
