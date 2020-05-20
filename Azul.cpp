@@ -31,6 +31,7 @@ int main(int argc, char const *argv[])
                 menu.printMessage("Azul game successfully loaded");
                 engine->playGame();
             }
+            else menu.printMessage("Error reading file\n");
         }
         else if (input == "3")
         {

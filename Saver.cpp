@@ -71,8 +71,11 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 
 GameEngine* Saver::load(std::string fileName, Menu* menu)
 {
+    GameEngine* gameEngine = nullptr;
     std::ifstream inputStream(fileName);
-    return load(inputStream, menu);
+    if (inputStream.good())
+        gameEngine = load(inputStream, menu);
+    return gameEngine;
 }
 
 
