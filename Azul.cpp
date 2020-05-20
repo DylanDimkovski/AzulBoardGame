@@ -27,7 +27,10 @@ int main(int argc, char const *argv[])
             std::string fileName = menu.getInput();
             engine = saver.load(fileName, &menu);
             if (engine != nullptr)
+            {
+                menu.printMessage("Azul game successfully loaded");
                 engine->playGame();
+            }
         }
         else if (input == "3")
         {
