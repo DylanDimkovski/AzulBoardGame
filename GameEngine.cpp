@@ -274,14 +274,13 @@ int GameEngine::drawFromCenter(TileType colour)
 
     std::vector<TileType>::reverse_iterator itr;
     {
-        for (itr = centerPile.rbegin(); itr < centerPile.rend(); itr++)
+        for (itr = centerPile.rbegin(); itr <= centerPile.rend(); itr++)
         {
-            int index = std::distance(begin(centerPile), itr.base()) - 1;
+            int index = std::distance(begin(centerPile), itr.base());
             if (centerPile[index] == colour)
             {
                 count++;
                 centerPile.erase(centerPile.begin() + index);
-                itr++;
             }
         }
         return count;
