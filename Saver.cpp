@@ -35,7 +35,7 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        outputStream << gameEngine->getFactory(i)->toString() << std::endl;
+        outputStream << gameEngine->getFactory(i)->toStringNoSpace() << std::endl;
     }
 
     // Player 1 mosiac

@@ -54,6 +54,16 @@ string Factory::toString()
     return output;
 }
 
+string Factory::toStringNoSpace()
+{
+    string output = "";
+    for (int i = 0; i < FACTORY_SIZE; i++)
+    {
+        output += tiles[i];
+    }
+    return output;
+}
+
 bool Factory::isEmpty()
 {
     bool isEmpty = false;

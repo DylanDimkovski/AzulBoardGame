@@ -16,6 +16,7 @@ public:
     std::vector<TileType> empty();
     int draw(TileType tileType);
     string toString();
+    string toStringNoSpace();
     bool isEmpty();
     bool contains(TileType tileType);
 
