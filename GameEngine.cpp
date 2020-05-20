@@ -46,6 +46,15 @@ void GameEngine::playGame()
         playRound();
         roundsPlayed++;
     }
+    Player *winningPlayer = playerTurnID;
+    for (auto player : players)
+    {
+        if (player->getScore() > winningPlayer->getScore())
+        {
+            winningPlayer = player;
+        }
+        menu->gameOver(winningPlayer);
+    }
 }
 
 void GameEngine::playRound()

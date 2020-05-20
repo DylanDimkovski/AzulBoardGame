@@ -3,12 +3,12 @@
 void Menu::printMenu()
 {
     std::cout << "Menu" << std::endl
-    << "----" << std::endl
-    << "1. New Game" << std::endl
-    << "2. Load Game" << std::endl
-    << "3. Credits" << std::endl
-    << "4. Quit" << std::endl
-    << std::endl;
+              << "----" << std::endl
+              << "1. New Game" << std::endl
+              << "2. Load Game" << std::endl
+              << "3. Credits" << std::endl
+              << "4. Quit" << std::endl
+              << std::endl;
 }
 std::string Menu::getInput()
 {
@@ -26,19 +26,20 @@ void Menu::printPlayer(Player player)
 }
 void Menu::printCredits()
 {
-    std::cout << std::endl << "----------------------------------" << std::endl
-    << "Name: Luca Cave" << std::endl
-    << "Student ID: s3787946" << std::endl
-    << "Email: s3787946@student.rmit.edu.au" << std::endl
+    std::cout << std::endl
+              << "----------------------------------" << std::endl
+              << "Name: Luca Cave" << std::endl
+              << "Student ID: s3787946" << std::endl
+              << "Email: s3787946@student.rmit.edu.au" << std::endl
               << std::endl
-    << "Name: Michael Sartorel" << std::endl
-    << "Student ID: s3786267" << std::endl
-    << "Email: s3786267@student.rmit.edu.au" << std::endl
+              << "Name: Michael Sartorel" << std::endl
+              << "Student ID: s3786267" << std::endl
+              << "Email: s3786267@student.rmit.edu.au" << std::endl
               << std::endl
-    << "Name: Dylan Dimkovski" << std::endl
-    << "Student ID: s3717379" << std::endl
-    << "Email: s3717379@student.rmit.edu.au" << std::endl
-    << "----------------------------------" << std::endl
+              << "Name: Dylan Dimkovski" << std::endl
+              << "Student ID: s3717379" << std::endl
+              << "Email: s3717379@student.rmit.edu.au" << std::endl
+              << "----------------------------------" << std::endl
               << std::endl;
 }
 
@@ -118,4 +119,11 @@ void Menu::printMosaic(Player *player)
 void Menu::printScore(string name, int score)
 {
     std::cout << name << " score: " << score << std::endl;
+}
+
+void Menu::gameOver(Player *player)
+{
+    std::cout << "=== Game Over ===" << std::endl;
+    std::cout << "Player " << player->getName() << " wins!" << std::endl;
+    printScore(player->getName(), player->getScore());
 }
