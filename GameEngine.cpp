@@ -40,11 +40,9 @@ void GameEngine::playGame(char const *argv)
 
 void GameEngine::playGame()
 {
-    int roundsPlayed = 0;
     while (!hasPlayerWon())
     {
         playRound();
-        roundsPlayed++;
     }
 
     Player *winningPlayer = playerTurnID;
