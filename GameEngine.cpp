@@ -182,7 +182,7 @@ bool GameEngine::validLineNum(int lineNum)
 
 bool GameEngine::validFactoryNum(int factoryNum)
 {
-    return factoryNum >= 0 && factoryNum < NUM_FACTORIES;
+    return factoryNum >= 0 && factoryNum <= NUM_FACTORIES;
 }
 
 bool GameEngine::roundOver()
