@@ -35,7 +35,7 @@ void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        outputStream << gameEngine->getFactory(i)->toString() << std::endl;
+        outputStream << gameEngine->getFactory(i)->toStringNoSpace() << std::endl;
     }
 
     // Player 1 mosiac
@@ -253,11 +253,11 @@ Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
 char Saver::tileTypeToLower(TileType tileType)
 {
     char result = '\0';
-    if (tileType == 'R') result = 'r';
-    else if (tileType == 'Y') result = 'y';
-    else if (tileType == 'B') result = 'b';
-    else if (tileType == 'L') result = 'l';
-    else if (tileType == 'U') result = 'u';
+    if (tileType == RED) result = 'r';
+    else if (tileType == YELLOW) result = 'y';
+    else if (tileType == DARKBLUE) result = 'b';
+    else if (tileType == LIGTHBLUE) result = 'l';
+    else if (tileType == BLACK) result = 'u';
     else result = char(tileType);
     return result;
 }

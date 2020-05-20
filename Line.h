@@ -13,10 +13,10 @@ public:
     int addTiles(int quantity, TileType tileType);
     void removeTiles();
     TileType getTileType();
-    bool hasTileType();
     int getNumTiles();
     int getMaxSize();
     std::string toString();
+    bool canAddTiles(TileType tileType);
 
 private:
     int maxSize;

@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 
+#include "Saver.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -117,8 +118,7 @@ void GameEngine::playRound()
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE ||
-                                playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
 
@@ -134,7 +134,7 @@ void GameEngine::playRound()
 
                     if (inputDone)
                     {
-                        setPlayerTurn();
+                        changePlayerTurn();
                         menu->printMessage("Turn successful.");
                     }
                 }
@@ -146,10 +146,13 @@ void GameEngine::playRound()
                 {
                     ss >> fileName;
                     // save file
-                    // Saver saver;
-                    // saver.save(this, fileName);
+                    Saver saver;
+                    saver.save(this, fileName);
                     inputDone = true;
                 }
+
+                if (inputDone)
+                    menu->printMessage("Game successfully saved to '" + fileName + "'");
             }
             if (!inputDone)
                 menu->printMessage("Invalid input, try again");
@@ -207,7 +210,7 @@ void GameEngine::setPlayerTurn(int playerIndex)
     playerTurnID = players[playerIndex];
 }
 
-void GameEngine::setPlayerTurn()
+void GameEngine::changePlayerTurn()
 {
     if (players[0] == playerTurnID)
     {
@@ -294,7 +297,7 @@ void GameEngine::fillCenterPile(std::vector<TileType> centerPile)
 
 void GameEngine::fillFactories(Factory *factories[])
 {
-    for (int i = 0; i < FACTORY_SIZE; ++i)
+    for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         this->factories[i] = factories[i];
     }
