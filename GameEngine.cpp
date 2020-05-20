@@ -100,10 +100,13 @@ void GameEngine::playRound()
                     {
                         if (!centerPile.empty() && centerPileContains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE ||
+                                playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
                             {
                                 if (containsFirstPlayer())
+                                {
                                     playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                }
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
                                 inputDone = true;
                             }
@@ -111,7 +114,6 @@ void GameEngine::playRound()
                     }
                     else
                     {
-
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
@@ -179,7 +181,7 @@ bool GameEngine::validLineNum(int lineNum)
 
 bool GameEngine::validFactoryNum(int factoryNum)
 {
-    return factoryNum >= 0 && factoryNum < NUM_FACTORIES;
+    return factoryNum >= 0 && factoryNum <= NUM_FACTORIES;
 }
 
 bool GameEngine::roundOver()
@@ -247,20 +249,21 @@ void GameEngine::fillBag(int seed)
 int GameEngine::drawFromCenter(TileType colour)
 {
     int count = 0;
-    int pos = 0;
-    for (TileType tile : centerPile)
+
+    std::vector<TileType>::reverse_iterator itr;
     {
-        if (tile == colour)
+        for (itr = centerPile.rbegin(); itr < centerPile.rend(); itr++)
         {
-            count++;
-            centerPile.erase(centerPile.begin() + pos);
+            int index = std::distance(begin(centerPile), itr.base()) - 1;
+            if (centerPile[index] == colour)
+            {
+                count++;
+                centerPile.erase(centerPile.begin() + index);
+                itr++;
+            }
         }
-        else
-        {
-            pos++;
-        }
+        return count;
     }
-    return count;
 }
 
 bool GameEngine::containsFirstPlayer()
@@ -363,6 +366,9 @@ bool GameEngine::centerPileContains(TileType tileType)
     bool centerPileContainsTile = false;
     unsigned int index = 0;
     while (!centerPileContainsTile && index < centerPile.size())
-        centerPileContainsTile = centerPile.at(index) == tileType;
+    {
+        centerPileContainsTile = centerPile[index] == tileType;
+        index++;
+    }
     return centerPileContainsTile;
 }
