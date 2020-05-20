@@ -46,6 +46,15 @@ void GameEngine::playGame()
         playRound();
         roundsPlayed++;
     }
+    Player *winningPlayer = playerTurnID;
+    for (auto player : players)
+    {
+        if (player->getScore() > winningPlayer->getScore())
+        {
+            winningPlayer = player;
+        }
+        menu->gameOver(winningPlayer);
+    }
 }
 
 void GameEngine::playRound()
@@ -59,6 +68,15 @@ void GameEngine::playRound()
 
             for (int j = 0; j < FACTORY_SIZE; j++)
             {
+                if (bag->size() == 0)
+                {
+                    TileList *tmp = bag;
+                    bag = lid;
+                    lid = tmp;
+                    tmp = nullptr;
+                    delete tmp;
+                }
+
                 temp[j] = bag->removeFront();
             }
 
@@ -101,10 +119,13 @@ void GameEngine::playRound()
                     {
                         if (!centerPile.empty() && centerPileContains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE ||
+                                playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
                             {
                                 if (containsFirstPlayer())
+                                {
                                     playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                }
                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
                                 inputDone = true;
                             }
@@ -112,7 +133,6 @@ void GameEngine::playRound()
                     }
                     else
                     {
-
                         --factoryNum;
                         if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                         {
@@ -150,7 +170,7 @@ void GameEngine::playRound()
                 }
 
                 if (inputDone)
-                    menu->printMessage("Game successfully saved to '"+fileName+"'");
+                    menu->printMessage("Game successfully saved to '" + fileName + "'");
             }
             if (!inputDone)
                 menu->printMessage("Invalid input, try again");
@@ -250,20 +270,21 @@ void GameEngine::fillBag(int seed)
 int GameEngine::drawFromCenter(TileType colour)
 {
     int count = 0;
-    int pos = 0;
-    for (TileType tile : centerPile)
+
+    std::vector<TileType>::reverse_iterator itr;
     {
-        if (tile == colour)
+        for (itr = centerPile.rbegin(); itr < centerPile.rend(); itr++)
         {
-            count++;
-            centerPile.erase(centerPile.begin() + pos);
+            int index = std::distance(begin(centerPile), itr.base()) - 1;
+            if (centerPile[index] == colour)
+            {
+                count++;
+                centerPile.erase(centerPile.begin() + index);
+                itr++;
+            }
         }
-        else
-        {
-            pos++;
-        }
+        return count;
     }
-    return count;
 }
 
 bool GameEngine::containsFirstPlayer()
@@ -366,6 +387,9 @@ bool GameEngine::centerPileContains(TileType tileType)
     bool centerPileContainsTile = false;
     unsigned int index = 0;
     while (!centerPileContainsTile && index < centerPile.size())
-        centerPileContainsTile = centerPile.at(index++) == tileType;
+    {
+        centerPileContainsTile = centerPile[index] == tileType;
+        index++;
+    }
     return centerPileContainsTile;
 }

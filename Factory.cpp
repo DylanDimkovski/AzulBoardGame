@@ -77,6 +77,9 @@ bool Factory::contains(TileType tileType)
     bool doesContain = false;
     int tileIndex = 0;
     while (!doesContain && tileIndex < FACTORY_SIZE)
-        doesContain = tiles[tileIndex++] == tileType;
+    {
+        doesContain = tiles[tileIndex] == tileType;
+        tileIndex++;
+    }
     return doesContain;
 }

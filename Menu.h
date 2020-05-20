@@ -21,6 +21,7 @@ public:
     void printFactory(std::vector<TileType> *centerPile);
     void printMosaic(Player *player);
     void printScore(string name, int score);
+    void gameOver(Player *player);
 
 private:
     TileType master_wall[NUMBER_OF_LINES][NUMBER_OF_LINES] = {DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,
