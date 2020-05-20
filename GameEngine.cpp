@@ -54,8 +54,8 @@ void GameEngine::playGame()
         {
             winningPlayer = player;
         }
-        menu->gameOver(winningPlayer);
     }
+    menu->gameOver(winningPlayer);
 }
 
 void GameEngine::playRound()
