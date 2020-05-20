@@ -46,6 +46,7 @@ void GameEngine::playGame()
         playRound();
         roundsPlayed++;
     }
+
     Player *winningPlayer = playerTurnID;
     for (auto player : players)
     {
@@ -83,10 +84,9 @@ void GameEngine::playRound()
             factories[i]->fill(temp);
         }
     }
-
+    menu->printMessage("=== Start Round ===");
     while (!roundOver())
     {
-        menu->printMessage("=== Start Round ===");
         menu->handStart(playerTurnID->getName());
         menu->printFactory(&centerPile);
         for (int i = 0; i < NUM_FACTORIES; i++)
@@ -134,7 +134,8 @@ void GameEngine::playRound()
                     else
                     {
                         --factoryNum;
-                        if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
+                        if (!factories[factoryNum]->isEmpty() &&
+                            (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE || factories[factoryNum]->contains(tileType)))
                         {
                             if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
