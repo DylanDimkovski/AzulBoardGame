@@ -43,6 +43,15 @@ void GameEngine::playGame()
     int roundsPlayed = 0;
     while (!hasPlayerWon())
     {
+        if (bag->size() == 0)
+        {
+            TileList *tmp = bag;
+            bag = lid;
+            lid = tmp;
+            tmp = nullptr;
+            delete tmp;
+        }
+
         playRound();
         roundsPlayed++;
     }
