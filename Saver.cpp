@@ -214,10 +214,10 @@ void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
 Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
 {
     Mosaic* mosaic = new Mosaic();
-    char c;
     for (int i = 0; i < NUMBER_OF_LINES; ++i)
     {   
         std::istringstream lineStream(lines[startingLine + i]);
+        char c;
         for (int j = 0; j < i+1; ++j)
         {
             lineStream >> c;
@@ -230,10 +230,9 @@ Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
     }
     
     std::istringstream brokenTilesStream(lines[startingLine + 5]);
-    while (brokenTilesStream.good())
+    char c;
+    while (brokenTilesStream.get(c))
     {
-        char c;
-        brokenTilesStream >> c;
         mosaic->addToBrokenTiles(1, charToTileType(c));
     }
     
