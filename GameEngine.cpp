@@ -132,7 +132,7 @@ void GameEngine::playRound()
 
                     if (inputDone)
                     {
-                        setPlayerTurn();
+                        changePlayerTurn();
                         menu->printMessage("Turn successful.");
                     }
                 }
@@ -208,7 +208,7 @@ void GameEngine::setPlayerTurn(int playerIndex)
     playerTurnID = players[playerIndex];
 }
 
-void GameEngine::setPlayerTurn()
+void GameEngine::changePlayerTurn()
 {
     if (players[0] == playerTurnID)
     {

@@ -46,7 +46,7 @@ public:
     Player *getPlayerTurnID();
 
 private:
-    void setPlayerTurn();
+    void changePlayerTurn();
     bool hasPlayerWon();
     int drawFromCenter(TileType colour);
     bool containsFirstPlayer();
