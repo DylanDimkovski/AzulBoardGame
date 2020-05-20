@@ -19,9 +19,9 @@ class GameEngine
 public:
     GameEngine(Menu *menu);
     ~GameEngine();
-    void playGame(char const *argv);
-    void playGame();
-    void playRound();
+    bool playGame(char const *argv);
+    bool playGame();
+    bool playRound();
     Player *addPlayer(string name);
     Player *addPlayer(std::string name, int score, Mosaic *mosaic);
     void addPlayers();
