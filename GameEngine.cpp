@@ -278,6 +278,11 @@ int GameEngine::drawFromCenter(TileType colour)
             if (centerPile[index] == colour)
             {
                 count++;
+                std::cout << centerPile.size() << std::endl;
+                if ((int)centerPile.size() == 1)
+                {
+                    index = 0;
+                }
                 centerPile.erase(centerPile.begin() + index);
             }
         }
