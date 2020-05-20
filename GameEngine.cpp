@@ -119,8 +119,7 @@ void GameEngine::playRound()
                     {
                         if (!centerPile.empty() && centerPileContains(tileType))
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE ||
-                                playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == tileType)
+                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
                                 if (containsFirstPlayer())
                                 {
@@ -134,8 +133,7 @@ void GameEngine::playRound()
                     else
                     {
                         --factoryNum;
-                        if (!factories[factoryNum]->isEmpty() &&
-                            (playerTurnID->getMosaic()->getLine(lineNum)->getTileType() == NOTILE || factories[factoryNum]->contains(tileType)))
+                        if (!factories[factoryNum]->isEmpty())
                         {
                             if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                             {
