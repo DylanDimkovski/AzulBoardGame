@@ -19,25 +19,29 @@ int main(int argc, char const *argv[])
         {
             menu.printMessage("Starting a New Game");
             engine = new GameEngine(&menu);
-            engine->playGame(argv[0]);
+            exit = engine->playGame(argv[0]);
         }
         else if (input == "2")
         {
             menu.printMessage("Enter the filename from which load a game");
             std::string fileName = menu.getInput();
-            engine = saver.load(fileName, &menu);
-            if (engine != nullptr)
+            if (!std::cin.eof())
             {
-                menu.printMessage("Azul game successfully loaded");
-                engine->playGame();
+                engine = saver.load(fileName, &menu);
+                if (engine != nullptr)
+                {
+                    menu.printMessage("Azul game successfully loaded");
+                    exit = engine->playGame();
+                }
+                else menu.printMessage("Error reading file\n");
             }
-            else menu.printMessage("Error reading file\n");
+            else exit = true;
         }
         else if (input == "3")
         {
             menu.printCredits();
         }
-        else if (input == "4")
+        else if (std::cin.eof() || input == "4")
         {
             exit = true;
         }
@@ -46,7 +50,7 @@ int main(int argc, char const *argv[])
             menu.printMessage("Invalid input, try again");
         }
     } while (!exit);
-
+    menu.printMessage("Goodbye");
     delete engine;
 
     return 0;

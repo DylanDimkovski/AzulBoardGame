@@ -30,35 +30,38 @@ GameEngine::~GameEngine()
     delete lid;
 }
 
-void GameEngine::playGame(char const *argv)
+bool GameEngine::playGame(char const *argv)
 {
     addPlayers();
     fillBag(argv[0]);
     playerTurnID = players[0];
-    playGame();
+    return playGame();
 }
 
-void GameEngine::playGame()
+bool GameEngine::playGame()
 {
-    int roundsPlayed = 0;
-    while (!hasPlayerWon())
+    bool exit = false;
+    while (!exit && !hasPlayerWon())
     {
-        playRound();
-        roundsPlayed++;
+        exit = playRound();
     }
 
-    Player *winningPlayer = playerTurnID;
-    for (auto player : players)
+    if (hasPlayerWon())
     {
-        if (player->getScore() > winningPlayer->getScore())
+        Player *winningPlayer = playerTurnID;
+        for (auto player : players)
         {
-            winningPlayer = player;
+            if (player->getScore() > winningPlayer->getScore())
+            {
+                winningPlayer = player;
+            }
         }
+        menu->gameOver(winningPlayer);
     }
-    menu->gameOver(winningPlayer);
+    return exit;
 }
 
-void GameEngine::playRound()
+bool GameEngine::playRound()
 {
     if (roundOver())
     {
@@ -84,8 +87,9 @@ void GameEngine::playRound()
             factories[i]->fill(temp);
         }
     }
+    bool exit = false;
     menu->printMessage("=== Start Round ===");
-    while (!roundOver())
+    while (!exit && !roundOver())
     {
         menu->handStart(playerTurnID->getName());
         menu->printFactory(&centerPile);
@@ -99,99 +103,109 @@ void GameEngine::playRound()
         do
         {
             std::stringstream ss(menu->getInput());
-
-            string command;
-
-            ss >> command;
-
-            if (command == "turn")
+            if (!std::cin.eof())
             {
-                unsigned int factoryNum, lineNum;
-                char colour;
+                string command;
 
-                ss >> factoryNum >> colour >> lineNum;
-                TileType tileType = charToTileType(colour);
-                --lineNum;
+                ss >> command;
 
-                if (validLineNum(lineNum) && validFactoryNum(factoryNum))
+                if (command == "turn")
                 {
-                    if (factoryNum == 0)
+                    unsigned int factoryNum, lineNum;
+                    char colour;
+
+                    ss >> factoryNum >> colour >> lineNum;
+                    TileType tileType = charToTileType(colour);
+                    --lineNum;
+
+                    if (validLineNum(lineNum) && validFactoryNum(factoryNum))
                     {
-                        if (!centerPile.empty() && centerPileContains(tileType))
+                        if (factoryNum == 0)
                         {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                            if (!centerPile.empty() && centerPileContains(tileType))
                             {
-                                if (containsFirstPlayer())
+                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                 {
-                                    playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                    if (containsFirstPlayer())
+                                    {
+                                        playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                    }
+                                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
+                                    inputDone = true;
                                 }
-                                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
-                                inputDone = true;
                             }
+                        }
+                        else
+                        {
+                            --factoryNum;
+                            if (!factories[factoryNum]->isEmpty())
+                            {
+                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                {
+                                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
+
+                                    for (TileType tile : factories[factoryNum]->empty())
+                                    {
+                                        centerPile.push_back(tile);
+                                    }
+
+                                    inputDone = true;
+                                }
+                            }
+                        }
+
+                        if (inputDone)
+                        {
+                            changePlayerTurn();
+                            menu->printMessage("Turn successful.");
                         }
                     }
-                    else
+                }
+                else if (command == "save")
+                {
+                    std::string fileName;
+                    if (ss.good())
                     {
-                        --factoryNum;
-                        if (!factories[factoryNum]->isEmpty())
-                        {
-                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
-                            {
-                                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
-
-                                for (TileType tile : factories[factoryNum]->empty())
-                                {
-                                    centerPile.push_back(tile);
-                                }
-
-                                inputDone = true;
-                            }
-                        }
+                        ss >> fileName;
+                        // save file
+                        Saver saver;
+                        saver.save(this, fileName);
+                        inputDone = true;
                     }
 
                     if (inputDone)
-                    {
-                        changePlayerTurn();
-                        menu->printMessage("Turn successful.");
-                    }
+                        menu->printMessage("Game successfully saved to '" + fileName + "'");
                 }
+                if (!inputDone)
+                    menu->printMessage("Invalid input, try again");
             }
-            else if (command == "save")
+            else
             {
-                std::string fileName;
-                if (ss.good())
-                {
-                    ss >> fileName;
-                    // save file
-                    Saver saver;
-                    saver.save(this, fileName);
-                    inputDone = true;
-                }
-
-                if (inputDone)
-                    menu->printMessage("Game successfully saved to '" + fileName + "'");
+                exit = true;
             }
-            if (!inputDone)
-                menu->printMessage("Invalid input, try again");
-        } while (!inputDone);
+        } while (!exit && !inputDone);
     }
 
-    //Distribute tiles to walls
-    menu->printMessage("=== END OF ROUND ===");
-
-    for (auto player : players)
+    if (!exit)
     {
-        if (player->hasFirstPlayer())
-        {
-            playerTurnID = player;
-        }
+        //Distribute tiles to walls
+        menu->printMessage("=== END OF ROUND ===");
 
-        for (TileType tile : player->calcScore())
+        for (auto player : players)
         {
-            lid->addBack(tile);
+            if (player->hasFirstPlayer())
+            {
+                playerTurnID = player;
+            }
+
+            for (TileType tile : player->calcScore())
+            {
+                lid->addBack(tile);
+            }
+            menu->printScore(player->getName(), player->getScore());
         }
-        menu->printScore(player->getName(), player->getScore());
     }
+    return exit;
 }
 
 bool GameEngine::validLineNum(int lineNum)
