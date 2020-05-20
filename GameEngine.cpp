@@ -294,7 +294,7 @@ void GameEngine::fillCenterPile(std::vector<TileType> centerPile)
 
 void GameEngine::fillFactories(Factory *factories[])
 {
-    for (int i = 0; i < FACTORY_SIZE; ++i)
+    for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         this->factories[i] = factories[i];
     }
