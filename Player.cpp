@@ -29,16 +29,15 @@ std::vector<TileType> Player::calcScore()
 
     for (int i = 0; i < NUMBER_OF_LINES; i++)
     {
-        int lineScore = scoreLine(i);
-        if (lineScore > 0)
+        if (getMosaic()->getLine(i)->getMaxSize() == getMosaic()->getLine(i)->getNumTiles())
         {
             TileType tile = getMosaic()->getLine(i)->getTileType();
             for (int j = 0; j < getMosaic()->getLine(i)->getMaxSize() - 1; j++)
             {
                 toLid.push_back(tile);
             }
-            score += lineScore;
         }
+        score += scoreLine(i);
     }
     for (int i = 0; i < mosaic->getBrokenTiles()->size(); i++)
     {
