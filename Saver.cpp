@@ -83,12 +83,17 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
 {
     GameEngine* gameEngine = new GameEngine(menu);
     int currentLine = 0;
-    std::string lines[27];
-    while (inputStream.good() && currentLine < 27)
+    std::string lines[SAVE_FILE_LINES_LENGTH];
+    while (inputStream.good() && currentLine < SAVE_FILE_LINES_LENGTH)
     {
         std::getline(inputStream, lines[currentLine++]);
     }
 
+    if (currentLine != SAVE_FILE_LINES_LENGTH)
+        delete gameEngine;
+        throw "Incorrect number of lines, missing info";
+
+    char c = '\0';
 
     // // Get seed
     // int seed;
@@ -116,7 +121,6 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     // Create center factory
     std::vector<TileType> centerFactory;
     std::istringstream centerFactoryStream(lines[5]);
-    char c;
     while (centerFactoryStream.get(c))
     {
         TileType toAdd = charToTileType(c);
@@ -137,9 +141,11 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
             {
                 if (factoryStream.good())
                 {
-                    char c;
+                    c = '\0';
                     factoryStream >> c;
-                    tiles[j] = charToTileType(c);
+                    if (selectableTile(c))
+                        tiles[j] = charToTileType(c);
+                    else throw "A factory contains an unselectable tile";
                 }
             }
         }
@@ -157,7 +163,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     std::istringstream lidStream(lines[25]);
     while (lidStream.good())
     {
-        char c;
+        c = '\0';
         lidStream >> c;
         TileType tile = charToTileType(c);
         if (tile != NOTILE && tile != FIRSTPLAYER)
@@ -171,7 +177,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     std::istringstream bagStream(lines[26]);
     while (bagStream.good())
     {
-        char c;
+        c = '\0';
         bagStream >> c;
         TileType tile = charToTileType(c);
         if (tile != NOTILE && tile != FIRSTPLAYER)
