@@ -9,6 +9,8 @@
 #define FACTORY_SIZE 4
 #define NUM_FACTORIES 5
 
+#define SAVE_FILE_LINES_LENGTH 27
+
 enum TileType
 {
     RED = 'R',
