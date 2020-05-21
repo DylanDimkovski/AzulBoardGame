@@ -16,7 +16,6 @@ void Saver::save(GameEngine* gameEngine, std::string fileName)
 
 void Saver::save(GameEngine* gameEngine, std::ofstream& outputStream)
 {
-    // outputStream << gameEngine->getRandomSeed() << std::endl;
     outputStream << (gameEngine->getPlayer(0) == gameEngine->getPlayerTurnID() ? "true" : "false") << std::endl;
     // Player 1 index
     outputStream << gameEngine->getPlayer(0)->getName() << std::endl;
@@ -94,11 +93,6 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
         throw "Incorrect number of lines, missing info";
 
     char c = '\0';
-
-    // // Get seed
-    // int seed;
-    // std::istringstream seedStream = getLineAsStream(inputStream);
-    // if (seedStream.good()) seedStream >> seed;
 
     // Check if it's player 1's turn
     bool player1Turn = true;
