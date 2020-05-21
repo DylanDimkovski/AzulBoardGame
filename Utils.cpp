@@ -20,8 +20,13 @@ bool selectableTile(char c)
     selectable |= c == 'Y';
     selectable |= c == 'B';
     selectable |= c == 'L';
-    selectable |= c == 'U';    
+    selectable |= c == 'U';
     return selectable;
+}
+
+bool selectableTile(TileType tile)
+{
+    return tile != NOTILE && tile != FIRSTPLAYER;
 }
 
 bool validTile(char c)
