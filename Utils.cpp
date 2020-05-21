@@ -12,3 +12,27 @@ TileType charToTileType(char c)
     else if (c == '.') result = NOTILE;
     return result;
 }
+
+bool selectableTile(char c)
+{
+    bool selectable = false;
+    selectable |= c == 'R'; 
+    selectable |= c == 'Y';
+    selectable |= c == 'B';
+    selectable |= c == 'L';
+    selectable |= c == 'U';    
+    return selectable;
+}
+
+bool validTile(char c)
+{
+    bool validTile = false;
+    validTile |= c == 'R';
+    validTile |= c == 'Y';
+    validTile |= c == 'B';
+    validTile |= c == 'L';
+    validTile |= c == 'U';
+    validTile |= c == 'F';
+    validTile |= c == '.';
+    return validTile;
+}
