@@ -252,14 +252,3 @@ Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
     return mosaic;
 }
 
-char Saver::tileTypeToLower(TileType tileType)
-{
-    char result = '\0';
-    if (tileType == RED) result = 'r';
-    else if (tileType == YELLOW) result = 'y';
-    else if (tileType == DARKBLUE) result = 'b';
-    else if (tileType == LIGTHBLUE) result = 'l';
-    else if (tileType == BLACK) result = 'u';
-    else result = char(tileType);
-    return result;
-}
