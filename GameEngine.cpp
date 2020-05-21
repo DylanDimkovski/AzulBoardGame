@@ -138,7 +138,7 @@ bool GameEngine::playRound()
                         else
                         {
                             --factoryNum;
-                            if (!factories[factoryNum]->isEmpty())
+                            if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
                             {
                                 if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                 {
