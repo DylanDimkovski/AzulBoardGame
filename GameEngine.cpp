@@ -28,6 +28,8 @@ GameEngine::~GameEngine()
     }
     delete bag;
     delete lid;
+    for (Player* player: players)
+        delete player;
 }
 
 bool GameEngine::playGame(char const *argv)
