@@ -107,67 +107,88 @@ bool GameEngine::playRound()
             std::stringstream ss(menu->getInput());
             if (!std::cin.eof())
             {
+                string errorMessage = "Command not recognised";
                 string command;
 
                 ss >> command;
 
                 if (command == "turn")
                 {
-                    unsigned int factoryNum, lineNum;
-                    char colour;
+                    errorMessage = "Invalid syntax for turn command";
+                    unsigned int factoryNum = NUM_FACTORIES + 1, lineNum = NUMBER_OF_LINES + 1;
+                    char colour = '\0';
 
                     ss >> factoryNum >> colour >> lineNum;
                     TileType tileType = charToTileType(colour);
                     --lineNum;
 
-                    if (validLineNum(lineNum) && validFactoryNum(factoryNum))
+                    if (validFactoryNum(factoryNum))
                     {
-                        if (factoryNum == 0)
+                        if (selectableTile(colour))
                         {
-                            if (!centerPile.empty() && centerPileContains(tileType))
+                            if (validLineNum(lineNum))
                             {
-                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                if (factoryNum == 0)
                                 {
-                                    if (containsFirstPlayer())
+                                    if (!centerPile.empty() && centerPileContains(tileType))
                                     {
-                                        playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                        if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                        {
+                                            if (containsFirstPlayer())
+                                            {
+                                                playerTurnID->getMosaic()->getBrokenTiles()->addFront(FIRSTPLAYER);
+                                            }
+                                            playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
+                                            inputDone = true;
+                                        }
+                                        else errorMessage = "Specified line cannot add tile";
                                     }
-                                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
-                                    inputDone = true;
+                                    else errorMessage = "Center pile does not contain specified tile";
+                                }
+                                else
+                                {
+                                    --factoryNum;
+                                    if (!factories[factoryNum]->isEmpty())
+                                    {
+                                        if (factories[factoryNum]->contains(tileType))
+                                        {
+                                            if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                            {
+                                                playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
+
+                                                for (TileType tile : factories[factoryNum]->empty())
+                                                {
+                                                    centerPile.push_back(tile);
+                                                }
+
+                                                inputDone = true;
+                                            }
+                                            else errorMessage = "Specified line cannot add tile";
+                                        }
+                                        else errorMessage = "Selected factory does not contain specified tile";
+                                    }
+                                    else errorMessage = "Selected factory is empty";
+                                }
+
+                                if (inputDone)
+                                {
+                                    changePlayerTurn();
+                                    menu->printMessage("Turn successful.");
                                 }
                             }
+                            else errorMessage = "Invalid line number";
                         }
-                        else
-                        {
-                            --factoryNum;
-                            if (!factories[factoryNum]->isEmpty() && factories[factoryNum]->contains(tileType))
-                            {
-                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
-                                {
-                                    playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
-
-                                    for (TileType tile : factories[factoryNum]->empty())
-                                    {
-                                        centerPile.push_back(tile);
-                                    }
-
-                                    inputDone = true;
-                                }
-                            }
-                        }
-
-                        if (inputDone)
-                        {
-                            changePlayerTurn();
-                            menu->printMessage("Turn successful.");
-                        }
+                        else errorMessage = "Invalid colour";
                     }
+                    else errorMessage = "Invalid factory number";
                 }
                 else if (command == "save")
                 {
+                    errorMessage = "Invalid syntax for save command";
                     std::string fileName;
                     if (ss.good())
                     {
+                        // std::getline(ss, fileName);
                         ss >> fileName;
                         // save file
                         Saver saver;
@@ -179,7 +200,7 @@ bool GameEngine::playRound()
                         menu->printMessage("Game successfully saved to '" + fileName + "'");
                 }
                 if (!inputDone)
-                    menu->printMessage("Invalid input, try again");
+                    menu->printMessage("Invalid input: "+errorMessage+", try again");
             }
             else
             {
