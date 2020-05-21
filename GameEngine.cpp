@@ -22,12 +22,12 @@ GameEngine::~GameEngine()
 {
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        delete factories[i];
+        if (factories[i] != nullptr) delete factories[i];
     }
-    delete bag;
-    delete lid;
+    if (bag != nullptr) delete bag;
+    if (lid != nullptr) delete lid;
     for (Player* player: players)
-        delete player;
+        if (player != nullptr) delete player;
 }
 
 bool GameEngine::playGame(char const *argv)
