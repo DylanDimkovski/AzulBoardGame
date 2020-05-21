@@ -1,5 +1,11 @@
 #include "Factory.h"
 
+Factory::Factory()
+{
+    TileType arr[FACTORY_SIZE] = {NOTILE, NOTILE, NOTILE, NOTILE};
+    fill(arr);
+}
+
 Factory::Factory(TileType arr[FACTORY_SIZE])
 {
     fill(arr);

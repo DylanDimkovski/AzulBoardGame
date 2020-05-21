@@ -12,11 +12,9 @@ GameEngine::GameEngine(Menu *menu) : players(),
                                      lid(new TileList()),
                                      menu(menu)
 {
-
-    for (int i = 0; i < NUM_FACTORIES; i++)
+    for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        TileType temp[4] = {NOTILE, NOTILE, NOTILE, NOTILE};
-        factories[i] = new Factory(temp);
+        factories[i] = new Factory();
     }
 }
 
@@ -357,6 +355,7 @@ void GameEngine::fillFactories(Factory *factories[])
 {
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
+        if (this->factories[i] != nullptr) delete this->factories[i];
         this->factories[i] = factories[i];
     }
 }
