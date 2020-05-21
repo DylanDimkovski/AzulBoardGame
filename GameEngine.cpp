@@ -233,7 +233,7 @@ bool GameEngine::playRound()
 
 bool GameEngine::validLineNum(int lineNum)
 {
-    return lineNum >= 0 && lineNum < NUMBER_OF_LINES;
+    return lineNum >= 0 && lineNum <= NUMBER_OF_LINES;
 }
 
 bool GameEngine::validFactoryNum(int factoryNum)
@@ -306,25 +306,23 @@ void GameEngine::fillBag(int seed)
 int GameEngine::drawFromCenter(TileType colour)
 {
     int count = 0;
+    std::vector<int> remove;
+    int decrement = 0;
 
-    std::vector<TileType>::reverse_iterator itr;
+    for (int i = 0; i < (int)centerPile.size(); i++)
     {
-        for (itr = centerPile.rbegin(); itr <= centerPile.rend(); itr++)
+        if (centerPile[i] == colour)
         {
-            int index = std::distance(begin(centerPile), itr.base());
-            if (centerPile[index] == colour)
-            {
-                count++;
-                std::cout << centerPile.size() << std::endl;
-                if ((int)centerPile.size() == 1)
-                {
-                    index = 0;
-                }
-                centerPile.erase(centerPile.begin() + index);
-            }
+            count++;
+            remove.push_back(i);
         }
-        return count;
     }
+    for (int i = 0; i < (int)remove.size(); i++)
+    {
+        centerPile.erase(centerPile.begin() + (remove[i] - decrement));
+        decrement++;
+    }
+    return count;
 }
 
 bool GameEngine::containsFirstPlayer()
