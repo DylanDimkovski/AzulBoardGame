@@ -31,6 +31,22 @@ bool Mosaic::isFilled(int row, int col)
     return wall[row][col];
 }
 
+bool Mosaic::isFilled(int row, TileType tile)
+{
+    bool filled = false;
+    for (size_t i = 0; i < NUMBER_OF_LINES; i++)
+    {
+        if (master_wall[row][i] == tile)
+        {
+            if (getWallLine(row)[i])
+            {
+                filled = true;
+            }
+        }
+    }
+    return filled;
+}
+
 void Mosaic::setFilled(int row, int col, bool filled)
 {
     wall[row][col] = filled;
@@ -38,8 +54,15 @@ void Mosaic::setFilled(int row, int col, bool filled)
 
 void Mosaic::insertTilesIntoLine(int row, int quantity, TileType tileType)
 {
-    int overflow = lines[row]->addTiles(quantity, tileType);
-    addToBrokenTiles(overflow, tileType);
+    if (row == 6)
+    {
+        addToBrokenTiles(quantity, tileType);
+    }
+    else
+    {
+        int overflow = lines[row]->addTiles(quantity, tileType);
+        addToBrokenTiles(overflow, tileType);
+    }
 }
 
 void Mosaic::addToBrokenTiles(int quantity, TileType tileType)

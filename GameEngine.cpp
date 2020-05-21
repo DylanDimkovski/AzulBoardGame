@@ -124,7 +124,8 @@ bool GameEngine::playRound()
                         {
                             if (!centerPile.empty() && centerPileContains(tileType))
                             {
-                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
+                                    playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                 {
                                     if (containsFirstPlayer())
                                     {
@@ -140,7 +141,8 @@ bool GameEngine::playRound()
                             --factoryNum;
                             if (!factories[factoryNum]->isEmpty())
                             {
-                                if (playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
+                                    playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                 {
                                     playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
 
@@ -210,7 +212,7 @@ bool GameEngine::playRound()
 
 bool GameEngine::validLineNum(int lineNum)
 {
-    return lineNum >= 0 && lineNum < NUMBER_OF_LINES;
+    return lineNum >= 0 && lineNum <= NUMBER_OF_LINES;
 }
 
 bool GameEngine::validFactoryNum(int factoryNum)
