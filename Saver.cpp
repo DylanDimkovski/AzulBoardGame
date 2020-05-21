@@ -251,4 +251,3 @@ Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
 
     return mosaic;
 }
-
