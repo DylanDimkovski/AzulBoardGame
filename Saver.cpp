@@ -88,9 +88,10 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
         std::getline(inputStream, lines[currentLine++]);
     }
 
-    if (currentLine != SAVE_FILE_LINES_LENGTH)
+    if (currentLine != SAVE_FILE_LINES_LENGTH){
         delete gameEngine;
         throw "Incorrect number of lines, missing info";
+    }
 
     char c = '\0';
 
