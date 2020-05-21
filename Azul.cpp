@@ -27,13 +27,20 @@ int main(int argc, char const *argv[])
             std::string fileName = menu.getInput();
             if (!std::cin.eof())
             {
-                engine = saver.load(fileName, &menu);
-                if (engine != nullptr)
+                try 
                 {
-                    menu.printMessage("Azul game successfully loaded");
-                    exit = engine->playGame();
+                    engine = saver.load(fileName, &menu);
+                    if (engine != nullptr)
+                    {
+                        menu.printMessage("Azul game successfully loaded");
+                        exit = engine->playGame();
+                    }
                 }
-                else menu.printMessage("Error reading file\n");
+                catch (const char* errorMessage)
+                {
+                    std::string message(errorMessage);
+                    menu.printMessage("Error reading file - "+message+"\n");
+                }
             }
             else exit = true;
         }
@@ -51,7 +58,7 @@ int main(int argc, char const *argv[])
         }
     } while (!exit);
     menu.printMessage("Goodbye");
-    delete engine;
+    if (engine != nullptr) delete engine;
 
     return 0;
 }

@@ -23,7 +23,9 @@ class Saver
         void save(GameEngine* gameEngine, std::ofstream& outputStream);
         GameEngine* load(std::istream& inputStream, Menu* menu);
         void outputWall(std::ofstream& outputStream, Mosaic* mosaic);
-        Mosaic* generateMosiac(std::string lines[28], int startingLine);
+        Mosaic* generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine);
+        void cleanUpFactories(Factory* factories[]);
+        bool isValidFactory(TileType tiles[]);
 };
 
 #endif

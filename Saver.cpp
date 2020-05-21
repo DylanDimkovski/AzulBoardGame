@@ -89,8 +89,10 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     }
 
     if (currentLine != SAVE_FILE_LINES_LENGTH)
+    {
         delete gameEngine;
         throw "Incorrect number of lines, missing info";
+    }
 
     char c = '\0';
 
@@ -101,29 +103,71 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     {
         std::string value;
         player1TurnStream >> value;
+        if (value != "true" && value != "false")
+        {
+            delete gameEngine;
+            throw "Player 1 turn value is invalid";
+        }
         player1Turn = value == "true";
     }
 
     // player 1
+    if (lines[1].empty())
+    {
+        delete gameEngine;
+        throw "Player 1 name cannot be empty";
+    }
     std::string player1Name = lines[1];
-    int player1Score = std::stoi(lines[2]);
+    int player1Score;
+    try
+    {
+        player1Score = std::stoi(lines[2]);
+    }
+    catch (...)
+    {
+        delete gameEngine;
+        throw "Player 1 score is not valid";
+    }
 
     // player 2
+    if (lines[3].empty())
+    {
+        delete gameEngine;
+        throw "Player 2 name cannot be empty";
+    }
     std::string player2Name = lines[3];
-    int player2Score = std::stoi(lines[4]);
+    int player2Score;
+    try
+    {
+        player2Score = std::stoi(lines[4]);
+    }
+    catch (...)
+    {
+        delete gameEngine;
+        throw "Player 2 score is not valid";
+    }
 
     // Create center factory
+    bool addedFirstTile = false;
     std::vector<TileType> centerFactory;
     std::istringstream centerFactoryStream(lines[5]);
     while (centerFactoryStream.get(c))
     {
-        TileType toAdd = charToTileType(c);
-        if (toAdd != NOTILE)
-            centerFactory.push_back(toAdd);
+        if (selectableTile(c) || (c == FIRSTPLAYER && !addedFirstTile))
+        {
+            addedFirstTile |= c == FIRSTPLAYER;
+            centerFactory.push_back(charToTileType(c));
+        }
+        else
+        {
+            delete gameEngine;
+            throw "Problem reading center factory";
+        }
     }
+    gameEngine->fillCenterPile(centerFactory);
     
     // Create all factories
-    Factory* factories[NUM_FACTORIES];
+    Factory* factories[NUM_FACTORIES] = {nullptr};
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         // Create a single factory
@@ -133,62 +177,92 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
             std::istringstream factoryStream(lines[6 + i]);
             for (int j = 0; j < FACTORY_SIZE; ++j)
             {
-                if (factoryStream.good())
+                if (factoryStream.get(c))
                 {
-                    c = '\0';
-                    factoryStream >> c;
-                    if (selectableTile(c))
-                        tiles[j] = charToTileType(c);
-                    else throw "A factory contains an unselectable tile";
+                    if (c != NOTILE && !selectableTile(c))
+                    {
+                        delete gameEngine;
+                        cleanUpFactories(factories);
+                        throw "A factory contains an invalid tile";
+                    }
+                    tiles[j] = charToTileType(c);
+                }
+                else
+                {
+                    delete gameEngine;
+                    cleanUpFactories(factories);
+                    throw "A factory is missing some tiles";
                 }
             }
         }
-        factories[i] = new Factory(tiles);
+
+        if (isValidFactory(tiles))
+            factories[i] = new Factory(tiles);
+        else
+        {
+            delete gameEngine;
+            cleanUpFactories(factories);
+            throw "A factory is invalid";
+        }
     }
+    gameEngine->fillFactories(factories);
 
     // Create player 1 mosaic
-    Mosaic* player1mosaic = generateMosiac(lines, 11);
+    Mosaic* player1mosaic = nullptr;
+    try
+    {
+        player1mosaic = generateMosiac(lines, 11);
+    }
+    catch (const char* errorMessage)
+    {
+        delete gameEngine;
+        throw errorMessage;
+    }
+    gameEngine->addPlayer(player1Name, player1Score, player1mosaic);
 
     // Create player 2 mosaic
-    Mosaic* player2mosaic = generateMosiac(lines, 18);
+    Mosaic* player2mosaic = nullptr;
+    try
+    {
+        player2mosaic = generateMosiac(lines, 18);
+    }
+    catch (const char* errorMessage)
+    {
+        delete gameEngine;
+        throw errorMessage;
+    }
+    gameEngine->addPlayer(player2Name, player2Score, player2mosaic);
+
 
     // Create lid
     TileList* lid = new TileList();
     std::istringstream lidStream(lines[25]);
-    while (lidStream.good())
+    while (lidStream.get(c))
     {
-        c = '\0';
-        lidStream >> c;
-        TileType tile = charToTileType(c);
-        if (tile != NOTILE && tile != FIRSTPLAYER)
+        if (!selectableTile(c))
         {
-            lid->addBack(tile);
+            delete gameEngine;
+            delete lid;
+            throw "The lid contains an unselectable tile";
         }
+        lid->addBack(charToTileType(c));
     }
+    gameEngine->fillLid(lid);
 
     // Create bag
     TileList* bag = new TileList();
     std::istringstream bagStream(lines[26]);
-    while (bagStream.good())
+    while (bagStream.get(c))
     {
-        c = '\0';
-        bagStream >> c;
-        TileType tile = charToTileType(c);
-        if (tile != NOTILE && tile != FIRSTPLAYER)
+        if (!selectableTile(c))
         {
-            bag->addBack(tile);
+            delete gameEngine;
+            delete bag;
+            throw "The bag contains an unselectable tile";
         }
+        bag->addBack(charToTileType(c));
     }
-
-    gameEngine->addPlayer(player1Name, player1Score, player1mosaic);
-    gameEngine->addPlayer(player2Name, player2Score, player2mosaic);
-
     gameEngine->fillBag(bag);
-    gameEngine->fillLid(lid);
-
-    gameEngine->fillFactories(factories);
-
-    gameEngine->fillCenterPile(centerFactory);
 
     if (player1Turn) gameEngine->setPlayerTurn(0);
     else gameEngine->setPlayerTurn(1);
@@ -211,43 +285,85 @@ void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
     outputStream << std::endl;
 }
 
-Mosaic* Saver::generateMosiac(std::string lines[28], int startingLine)
+Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine)
 {
     Mosaic* mosaic = new Mosaic();
-    for (int i = 0; i < NUMBER_OF_LINES; ++i)
-    {   
-        std::istringstream lineStream(lines[startingLine + i]);
-        char c;
-        for (int j = 0; j < i+1; ++j)
-        {
-            lineStream >> c;
-            TileType toAdd = charToTileType(c);
-            if (toAdd != NOTILE && toAdd != FIRSTPLAYER)
-            {
-                mosaic->insertTilesIntoLine(i, 1, toAdd);
-            }
-        }
-    }
-    
-    std::istringstream brokenTilesStream(lines[startingLine + 5]);
-    char c;
-    while (brokenTilesStream.get(c))
-    {
-        mosaic->addToBrokenTiles(1, charToTileType(c));
-    }
-    
     std::istringstream wallStream(lines[startingLine + 6]);
     for (int row = 0; row < NUMBER_OF_LINES; ++row)
     {
         for (int col = 0; col < NUMBER_OF_LINES; ++col)
         {
-            char c;
-            wallStream >> c;
+            char c = '\0';
+            if (wallStream.get(c))
+            {
+                if (selectableTile(std::toupper(c)))
+                    mosaic->setFilled(row, col, std::isupper(c));
+                else
+                {
+                    delete mosaic;
+                    throw "A mosaic wall contains an invalid tile";
+                }
+            }
+            else
+            {
+                delete mosaic;
+                throw "A mosaic wall is missing tiles";
+            }
+        }
+    }
+
+    for (int i = 0; i < NUMBER_OF_LINES; ++i)
+    {   
+        std::istringstream lineStream(lines[startingLine + i]);
+        char c = '\0';
+        for (int j = 0; j < i+1; ++j)
+        {
+            lineStream >> c;
             TileType toAdd = charToTileType(c);
-            if (toAdd != NOTILE && toAdd != FIRSTPLAYER)
-                mosaic->setFilled(row, col, true);
+            if (c == NOTILE || (selectableTile(c) && mosaic->getLine(i)->canAddTiles(toAdd) && !mosaic->isFilled(i, toAdd)))
+                mosaic->insertTilesIntoLine(i, 1, toAdd);
+            else
+            {
+                delete mosaic;
+                throw "A mosaic contains an invalid line";
+            }
+        }
+    }
+    
+    std::istringstream brokenTilesStream(lines[startingLine + 5]);
+    char c = '\0';
+    bool addedFirstTile = false;
+    while (brokenTilesStream.get(c))
+    {
+        if (selectableTile(c) || (c == FIRSTPLAYER && !addedFirstTile))
+        {
+            addedFirstTile |= c == FIRSTPLAYER;
+            mosaic->addToBrokenTiles(1, charToTileType(c));
+        }
+        else
+        {
+            delete mosaic;
+            throw "There is a problem in the broken tiles";
         }
     }
 
     return mosaic;
+}
+
+void Saver::cleanUpFactories(Factory* factories[])
+{
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+        if (factories[i] != nullptr) delete factories[i];
+}
+
+bool Saver::isValidFactory(TileType tiles[])
+{
+    bool allNotile = true;
+    bool allSelectable = false;
+    for (int i = 0; i < FACTORY_SIZE; ++i)
+    {
+        allNotile &= tiles[i] == NOTILE;
+        allSelectable &= selectableTile(tiles[i]);
+    }
+    return allNotile || allSelectable;
 }
