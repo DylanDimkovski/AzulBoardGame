@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <string>
-#include <iostream>
 #include <vector>
 #include "Mosaic.h"
 

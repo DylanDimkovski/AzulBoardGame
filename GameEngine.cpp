@@ -52,26 +52,21 @@ bool GameEngine::playGame()
 
     if (hasPlayerWon())
     {
-        bool draw = false;
-        Player *winningPlayer = playerTurnID;
-        for (auto player : players)
+        if (players[0]->getScore() == players[1]->getScore())
         {
-            if (player->getScore() > winningPlayer->getScore())
-            {
-                winningPlayer = player;
-            }
-            else if (player->getScore() == winningPlayer->getScore())
-            {
-                draw = true;
-            }
-        }
-        if (!draw)
-        {
-            menu->gameOver(winningPlayer);
+            menu->gameOver(players[0]->getName(), players[1]->getName(), players[0]->getScore());
         }
         else
         {
-            menu->gameOver(players[0]->getName(), players[1]->getName(), winningPlayer->getScore());
+            Player *winningPlayer = playerTurnID;
+            for (auto player : players)
+            {
+                if (player->getScore() > winningPlayer->getScore())
+                {
+                    winningPlayer = player;
+                }
+            }
+            menu->gameOver(winningPlayer);
         }
     }
     return exit;

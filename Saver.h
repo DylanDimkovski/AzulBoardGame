@@ -2,7 +2,6 @@
 #define SAVER_H
 
 #include <string>
-#include <iostream>
 #include <istream>
 #include <sstream>
 #include <fstream>
@@ -15,17 +14,17 @@ using std::string;
 
 class Saver
 {
-    public:
-        void save(GameEngine* gameEngine, std::string fileName);
-        GameEngine* load(std::string fileName, Menu* menu);
+public:
+    void save(GameEngine *gameEngine, std::string fileName);
+    GameEngine *load(std::string fileName, Menu *menu);
 
-    private:
-        void save(GameEngine* gameEngine, std::ofstream& outputStream);
-        GameEngine* load(std::istream& inputStream, Menu* menu);
-        void outputWall(std::ofstream& outputStream, Mosaic* mosaic);
-        Mosaic* generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine, bool& addedFirstTile, int& tileCount);
-        void cleanUpFactories(Factory* factories[]);
-        bool isValidFactory(TileType tiles[]);
+private:
+    void save(GameEngine *gameEngine, std::ofstream &outputStream);
+    GameEngine *load(std::istream &inputStream, Menu *menu);
+    void outputWall(std::ofstream &outputStream, Mosaic *mosaic);
+    Mosaic *generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine, bool &addedFirstTile, int &tileCount);
+    void cleanUpFactories(Factory *factories[]);
+    bool isValidFactory(TileType tiles[]);
 };
 
 #endif
