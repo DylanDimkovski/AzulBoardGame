@@ -165,7 +165,10 @@ bool GameEngine::playRound()
                                             if (lineNum == 5)
                                             {
                                                 playerTurnID->getMosaic()->addToBrokenTiles(factories[factoryNum]->draw(tileType), tileType);
-                                                factories[factoryNum]->empty();
+                                                for (TileType tile : factories[factoryNum]->empty())
+                                                {
+                                                    centerPile.push_back(tile);
+                                                }
                                                 inputDone = true;
                                             }
                                             else if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
