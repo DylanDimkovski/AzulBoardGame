@@ -22,12 +22,16 @@ GameEngine::~GameEngine()
 {
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        if (factories[i] != nullptr) delete factories[i];
+        if (factories[i] != nullptr)
+            delete factories[i];
     }
-    if (bag != nullptr) delete bag;
-    if (lid != nullptr) delete lid;
-    for (Player* player: players)
-        if (player != nullptr) delete player;
+    if (bag != nullptr)
+        delete bag;
+    if (lid != nullptr)
+        delete lid;
+    for (Player *player : players)
+        if (player != nullptr)
+            delete player;
 }
 
 bool GameEngine::playGame(char const *argv)
@@ -130,8 +134,13 @@ bool GameEngine::playRound()
                                 {
                                     if (!centerPile.empty() && centerPileContains(tileType))
                                     {
-                                        if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) && 
-                                            playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                        if (lineNum == 5)
+                                        {
+                                            playerTurnID->getMosaic()->addToBrokenTiles(drawFromCenter(tileType), tileType);
+                                            inputDone = true;
+                                        }
+                                        else if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
+                                                 playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                         {
                                             if (containsFirstPlayer())
                                             {
@@ -140,9 +149,11 @@ bool GameEngine::playRound()
                                             playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, drawFromCenter(tileType), tileType);
                                             inputDone = true;
                                         }
-                                        else errorMessage = "Specified line cannot add tile";
+                                        else
+                                            errorMessage = "Specified line cannot add tile";
                                     }
-                                    else errorMessage = "Center pile does not contain specified tile";
+                                    else
+                                        errorMessage = "Center pile does not contain specified tile";
                                 }
                                 else
                                 {
@@ -151,8 +162,13 @@ bool GameEngine::playRound()
                                     {
                                         if (factories[factoryNum]->contains(tileType))
                                         {
-                                            if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) && 
-                                                playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
+                                            if (lineNum == 5)
+                                            {
+                                                playerTurnID->getMosaic()->addToBrokenTiles(factories[factoryNum]->draw(tileType), tileType);
+                                                inputDone = true;
+                                            }
+                                            else if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
+                                                     playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                             {
                                                 playerTurnID->getMosaic()->insertTilesIntoLine(lineNum, factories[factoryNum]->draw(tileType), tileType);
 
@@ -163,11 +179,14 @@ bool GameEngine::playRound()
 
                                                 inputDone = true;
                                             }
-                                            else errorMessage = "Specified line cannot add tile";
+                                            else
+                                                errorMessage = "Specified line cannot add tile";
                                         }
-                                        else errorMessage = "Selected factory does not contain specified tile";
+                                        else
+                                            errorMessage = "Selected factory does not contain specified tile";
                                     }
-                                    else errorMessage = "Selected factory is empty";
+                                    else
+                                        errorMessage = "Selected factory is empty";
                                 }
 
                                 if (inputDone)
@@ -176,11 +195,14 @@ bool GameEngine::playRound()
                                     menu->printMessage("Turn successful.");
                                 }
                             }
-                            else errorMessage = "Invalid line number";
+                            else
+                                errorMessage = "Invalid line number";
                         }
-                        else errorMessage = "Invalid colour";
+                        else
+                            errorMessage = "Invalid colour";
                     }
-                    else errorMessage = "Invalid factory number";
+                    else
+                        errorMessage = "Invalid factory number";
                 }
                 else if (command == "save")
                 {
@@ -202,7 +224,7 @@ bool GameEngine::playRound()
                         menu->printMessage("Game successfully saved to '" + fileName + "'");
                 }
                 if (!inputDone)
-                    menu->printMessage("Invalid input: "+errorMessage+", try again");
+                    menu->printMessage("Invalid input: " + errorMessage + ", try again");
             }
             else
             {
@@ -357,7 +379,8 @@ void GameEngine::fillFactories(Factory *factories[])
 {
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        if (this->factories[i] != nullptr) delete this->factories[i];
+        if (this->factories[i] != nullptr)
+            delete this->factories[i];
         this->factories[i] = factories[i];
     }
 }
