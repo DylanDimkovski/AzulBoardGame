@@ -62,5 +62,6 @@ std::string Line::toString()
 bool Line::canAddTiles(TileType tileType)
 {
     return  tileType != FIRSTPLAYER && tileType != NOTILE 
-        && (this->tileType == NOTILE || this->tileType == tileType);
+        && (this->tileType == NOTILE || this->tileType == tileType)
+        && numTiles < maxSize;
 }
