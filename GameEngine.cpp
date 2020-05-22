@@ -186,14 +186,16 @@ bool GameEngine::playRound()
                 {
                     errorMessage = "Invalid syntax for save command";
                     std::string fileName;
-                    if (ss.good())
+                    if (!ss.eof())
                     {
-                        // std::getline(ss, fileName);
-                        ss >> fileName;
-                        // save file
-                        Saver saver;
-                        saver.save(this, fileName);
-                        inputDone = true;
+                        ss.get(); // removes initial whitespace between save and filename
+                        std::getline(ss, fileName);
+                        if (isNotWhiteSpace(fileName))
+                        {
+                            Saver saver;
+                            saver.save(this, fileName);
+                            inputDone = true;
+                        }
                     }
 
                     if (inputDone)

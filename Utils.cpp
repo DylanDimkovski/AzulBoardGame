@@ -53,3 +53,20 @@ char tileTypeToLower(TileType tileType)
     else result = char(tileType);
     return result;
 }
+
+bool isNotWhiteSpace(const std::string str)
+{
+    bool isWhiteSpace = true;
+    std::istringstream ss(str);
+    char c = '\0';
+    while (isWhiteSpace && ss.get(c))
+    {
+        isWhiteSpace = std::isspace(c);
+    }
+    return !isWhiteSpace;
+}
+
+bool isWhiteSpace(const std::string str)
+{
+    return !isNotWhiteSpace(str);
+}

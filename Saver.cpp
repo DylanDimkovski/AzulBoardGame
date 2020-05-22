@@ -112,7 +112,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     }
 
     // player 1
-    if (lines[1].empty())
+    if (isWhiteSpace(lines[1]))
     {
         delete gameEngine;
         throw "Player 1 name cannot be empty";
@@ -130,7 +130,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     }
 
     // player 2
-    if (lines[3].empty())
+    if (isWhiteSpace(lines[3]))
     {
         delete gameEngine;
         throw "Player 2 name cannot be empty";
@@ -359,7 +359,7 @@ void Saver::cleanUpFactories(Factory* factories[])
 bool Saver::isValidFactory(TileType tiles[])
 {
     bool allNotile = true;
-    bool allSelectable = false;
+    bool allSelectable = true;
     for (int i = 0; i < FACTORY_SIZE; ++i)
     {
         allNotile &= tiles[i] == NOTILE;
