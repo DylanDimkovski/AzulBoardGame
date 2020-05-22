@@ -81,7 +81,7 @@ GameEngine* Saver::load(std::string fileName, Menu* menu)
 GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
 {
     GameEngine* gameEngine = new GameEngine(menu);
-    int tileCount = 0;
+    int numberOfEachTile[NUMBER_OF_COLOURS] = {0};
     bool addedFirstTile = false;
     int currentLine = 0;
     std::string lines[SAVE_FILE_LINES_LENGTH];
@@ -156,7 +156,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     {
         if (selectableTile(c) || (c == FIRSTPLAYER && !addedFirstTile))
         {
-            ++tileCount;
+            if (selectableTile(c)) ++numberOfEachTile[getTileIndex(c)];
             addedFirstTile |= c == FIRSTPLAYER;
             centerFactory.push_back(charToTileType(c));
         }
@@ -182,16 +182,16 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
             {
                 if (factoryStream.get(c))
                 {
-                    if (c != NOTILE && !selectableTile(c))
+                    if (c == NOTILE || selectableTile(c))
+                    {
+                        if (selectableTile(c)) ++numberOfEachTile[getTileIndex(c)];
+                        tiles[j] = charToTileType(c);
+                    }
+                    else
                     {
                         delete gameEngine;
                         cleanUpFactories(factories);
                         throw "A factory contains an invalid tile";
-                    }
-                    else
-                    {
-                        ++tileCount;
-                        tiles[j] = charToTileType(c);
                     }
                 }
                 else
@@ -218,7 +218,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     Mosaic* player1mosaic = nullptr;
     try
     {
-        player1mosaic = generateMosiac(lines, 11, addedFirstTile, tileCount);
+        player1mosaic = generateMosiac(lines, 11, addedFirstTile, numberOfEachTile);
     }
     catch (const char* errorMessage)
     {
@@ -231,7 +231,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     Mosaic* player2mosaic = nullptr;
     try
     {
-        player2mosaic = generateMosiac(lines, 18, addedFirstTile, tileCount);
+        player2mosaic = generateMosiac(lines, 18, addedFirstTile, numberOfEachTile);
     }
     catch (const char* errorMessage)
     {
@@ -254,7 +254,7 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
         }
         else
         {
-            ++tileCount;
+            ++numberOfEachTile[getTileIndex(c)];
             lid->addBack(charToTileType(c));
         }
     }
@@ -273,16 +273,21 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
         }
         else
         {
-            ++tileCount;
+            ++numberOfEachTile[getTileIndex(c)];
             bag->addBack(charToTileType(c));
         }
     }
     gameEngine->fillBag(bag);
 
-    if (tileCount < 101)
+    int sumOfTiles = calculateSumOfTiles(numberOfEachTile) + (addedFirstTile ? 1 : 0);
+    if (sumOfTiles < 101)
+    {
         throw "Incorrect number of tiles, not enough tiles in file";
-    else if (tileCount > 101)
+    }
+    else if (sumOfTiles > 101)
+    {
         throw "Incorrect number of tiles, too many tiles in file";
+    }
 
     if (player1Turn) gameEngine->setPlayerTurn(0);
     else gameEngine->setPlayerTurn(1);
@@ -305,7 +310,7 @@ void Saver::outputWall(std::ofstream& outputStream, Mosaic* mosaic)
     outputStream << std::endl;
 }
 
-Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine, bool& addedFirstTile, int& tileCount)
+Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int startingLine, bool& addedFirstTile, int numberOfEachTile[])
 {
     Mosaic* mosaic = new Mosaic();
     std::istringstream wallStream(lines[startingLine + 6]);
@@ -318,7 +323,7 @@ Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int sta
             {
                 if (selectableTile(std::toupper(c)))
                 {
-                    if (std::isupper(c)) ++tileCount;
+                    if (std::isupper(c)) ++numberOfEachTile[getTileIndex(c)];
                     mosaic->setFilled(row, col, std::isupper(c));
                 }
                 else
@@ -345,7 +350,7 @@ Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int sta
             TileType toAdd = charToTileType(c);
             if (c == NOTILE || (selectableTile(c) && mosaic->getLine(i)->canAddTiles(toAdd) && !mosaic->isFilled(i, toAdd)))
             {
-                if (c != NOTILE) ++tileCount;
+                if (c != NOTILE) ++numberOfEachTile[getTileIndex(c)];
                 mosaic->insertTilesIntoLine(i, 1, toAdd);
             }
             else
@@ -362,7 +367,7 @@ Mosaic* Saver::generateMosiac(std::string lines[SAVE_FILE_LINES_LENGTH], int sta
     {
         if (selectableTile(c) || (c == FIRSTPLAYER && !addedFirstTile))
         {
-            ++tileCount;
+            if (selectableTile(c)) ++numberOfEachTile[getTileIndex(c)];
             addedFirstTile |= c == FIRSTPLAYER;
             mosaic->addToBrokenTiles(1, charToTileType(c));
         }
@@ -393,4 +398,23 @@ bool Saver::isValidFactory(TileType tiles[])
         allSelectable &= selectableTile(tiles[i]);
     }
     return allNotile || allSelectable;
+}
+
+int Saver::getTileIndex(char c)
+{
+    int index = 0;
+    if (c == RED) index = 0;
+    else if (c == YELLOW) index = 1;
+    else if (c == DARKBLUE) index = 2;
+    else if (c == LIGTHBLUE) index = 3;
+    else if (c == BLACK) index = 4;
+    return index;
+}
+
+int Saver::calculateSumOfTiles(int numberOfEachTile[])
+{
+    int total = 0;
+    for (int i = 0; i < NUMBER_OF_COLOURS; ++i)
+        total += numberOfEachTile[i];
+    return total;
 }
