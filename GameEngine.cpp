@@ -407,7 +407,7 @@ void GameEngine::addPlayers()
     bool hasvalidName = true;
     string name1;
     do
-    {        
+    {
         menu->printMessage("Enter the name for player 1:");
         name1 = menu->getInput();
         hasvalidName = isNotWhiteSpace(name1);
