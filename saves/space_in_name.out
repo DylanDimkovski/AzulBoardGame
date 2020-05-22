@@ -1,23 +1,23 @@
-false
-a
+true
+test name
 0
-b
+test name2
 0
-FBLYULRBBUUY
-....
-....
-....
-....
-....
-R
-YY
-BBB
+F
+YBLY
+YRUR
+BBLB
+RBLB
+RUUY
+.
+..
+...
 ....
 .....
 
 byrullbyruulbyrrulbyyrulb
-L
-RR
+.
+..
 ...
 ....
 .....
@@ -25,4 +25,4 @@ RR
 byrullbyruulbyrrulbyyrulb
 
 RLYBRBLLRRURLLUULBRLURUBUYYLYLLRRYYLRUBYLUUYBBRBUYBUYUYUBYBLYRULLYRUUBRULYBRBRYL
-//Scenario with empty factories but full center, test drawing from center pile
+//test that a username with whitespace is accepted

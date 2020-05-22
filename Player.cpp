@@ -39,7 +39,8 @@ std::vector<TileType> Player::calcScore()
         }
         score += scoreLine(i);
     }
-    for (int i = 0; i < mosaic->getBrokenTiles()->size(); i++)
+    int size = mosaic->getBrokenTiles()->size();
+    for (int i = 0; i < size; i++)
     {
         if (i <= 1)
         {
