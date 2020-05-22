@@ -22,6 +22,7 @@ public:
     void printMosaic(Player *player);
     void printScore(string name, int score);
     void gameOver(Player *player);
+    void gameOver(std::string name1, std::string name2, int score);
 
 private:
     TileType master_wall[NUMBER_OF_LINES][NUMBER_OF_LINES] = {DARKBLUE, YELLOW, RED, BLACK, LIGTHBLUE,

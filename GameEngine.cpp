@@ -52,6 +52,7 @@ bool GameEngine::playGame()
 
     if (hasPlayerWon())
     {
+        bool draw = false;
         Player *winningPlayer = playerTurnID;
         for (auto player : players)
         {
@@ -59,8 +60,19 @@ bool GameEngine::playGame()
             {
                 winningPlayer = player;
             }
+            else if (player->getScore() == winningPlayer->getScore())
+            {
+                draw = true;
+            }
         }
-        menu->gameOver(winningPlayer);
+        if (!draw)
+        {
+            menu->gameOver(winningPlayer);
+        }
+        else
+        {
+            menu->gameOver(players[0]->getName(), players[1]->getName(), winningPlayer->getScore());
+        }
     }
     return exit;
 }
@@ -411,9 +423,9 @@ void GameEngine::addPlayers()
         menu->printMessage("Enter the name for player 1:");
         name1 = menu->getInput();
         hasValidName = isNotWhiteSpace(name1);
-        if (!hasValidName) menu->printMessage("Error - Invalid Name");
-    }
-    while (!hasValidName);
+        if (!hasValidName)
+            menu->printMessage("Error - Invalid Name");
+    } while (!hasValidName);
 
     hasValidName = true;
     string name2;
@@ -422,9 +434,9 @@ void GameEngine::addPlayers()
         menu->printMessage("Enter the name for player 2:");
         name2 = menu->getInput();
         hasValidName = isNotWhiteSpace(name2);
-        if (!hasValidName) menu->printMessage("Error - Invalid Name");
-    }
-    while (!hasValidName);
+        if (!hasValidName)
+            menu->printMessage("Error - Invalid Name");
+    } while (!hasValidName);
 
     addPlayer(name1);
     addPlayer(name2);

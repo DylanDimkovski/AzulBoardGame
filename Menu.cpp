@@ -127,3 +127,11 @@ void Menu::gameOver(Player *player)
     std::cout << "Player " << player->getName() << " wins!" << std::endl;
     printScore(player->getName(), player->getScore());
 }
+
+void Menu::gameOver(string name1, string name2, int score)
+{
+    std::cout << "=== Game Over ===" << std::endl;
+    std::cout << "Draw!" << std::endl;
+    std::cout << "Player " << name1 << " score: " << score << std::endl;
+    std::cout << "Player " << name2 << " score: " << score << std::endl;
+}
