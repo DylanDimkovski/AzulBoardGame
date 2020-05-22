@@ -74,6 +74,8 @@ GameEngine* Saver::load(std::string fileName, Menu* menu)
     std::ifstream inputStream(fileName);
     if (inputStream.good())
         gameEngine = load(inputStream, menu);
+    else
+        throw "File not found";
     return gameEngine;
 }
 
