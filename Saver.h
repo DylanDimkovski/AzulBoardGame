@@ -2,7 +2,6 @@
 #define SAVER_H
 
 #include <string>
-#include <iostream>
 #include <istream>
 #include <sstream>
 #include <fstream>
@@ -15,9 +14,9 @@ using std::string;
 
 class Saver
 {
-    public:
-        void save(GameEngine* gameEngine, std::string fileName);
-        GameEngine* load(std::string fileName, Menu* menu);
+public:
+    void save(GameEngine *gameEngine, std::string fileName);
+    GameEngine *load(std::string fileName, Menu *menu);
 
     private:
         void save(GameEngine* gameEngine, std::ofstream& outputStream);
