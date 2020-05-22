@@ -373,11 +373,13 @@ bool GameEngine::containsFirstPlayer()
 
 void GameEngine::fillBag(TileList *bag)
 {
+    if (this->bag != nullptr) delete this->bag;
     this->bag = bag;
 }
 
 void GameEngine::fillLid(TileList *lid)
 {
+    if (this->lid != nullptr) delete this->lid;
     this->lid = lid;
 }
 

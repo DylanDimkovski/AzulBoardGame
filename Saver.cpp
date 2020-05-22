@@ -279,13 +279,21 @@ GameEngine* Saver::load(std::istream& inputStream, Menu* menu)
     }
     gameEngine->fillBag(bag);
 
+    if (!addedFirstTile)
+    {
+        delete gameEngine;
+        throw "Missing first player tile";
+    }
+
     int sumOfTiles = calculateSumOfTiles(numberOfEachTile) + (addedFirstTile ? 1 : 0);
     if (sumOfTiles < 101)
     {
+        delete gameEngine;
         throw "Incorrect number of tiles, not enough tiles in file";
     }
     else if (sumOfTiles > 101)
     {
+        delete gameEngine;
         throw "Incorrect number of tiles, too many tiles in file";
     }
 
