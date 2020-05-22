@@ -404,11 +404,27 @@ Player *GameEngine::addPlayer(std::string name, int score, Mosaic *mosaic)
 void GameEngine::addPlayers()
 {
     //Checks for player names and adds them to player vector
+    bool hasvalidName = true;
+    string name1;
+    do
+    {        
+        menu->printMessage("Enter the name for player 1:");
+        name1 = menu->getInput();
+        hasvalidName = isNotWhiteSpace(name1);
+        if (!hasvalidName) menu->printMessage("Error - Invalid Name");
+    }
+    while (!hasvalidName);
 
-    menu->printMessage("Enter the name for player 1:");
-    string name1 = menu->getInput();
-    menu->printMessage("Enter the name for player 2:");
-    string name2 = menu->getInput();
+    hasvalidName = true;
+    string name2;
+    do
+    {
+        menu->printMessage("Enter the name for player 2:");
+        name2 = menu->getInput();
+        hasvalidName = isNotWhiteSpace(name2);
+        if (!hasvalidName) menu->printMessage("Error - Invalid Name");
+    }
+    while (!hasvalidName);
 
     addPlayer(name1);
     addPlayer(name2);
