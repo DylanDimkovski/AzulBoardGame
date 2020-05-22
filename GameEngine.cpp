@@ -12,6 +12,7 @@ GameEngine::GameEngine(Menu *menu) : players(),
                                      lid(new TileList()),
                                      menu(menu)
 {
+    //Create factories
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         factories[i] = new Factory();
@@ -44,18 +45,22 @@ bool GameEngine::playGame(char const *argv)
 
 bool GameEngine::playGame()
 {
+    //Bool to track exit condition
     bool exit = false;
     while (!exit && !hasPlayerWon())
     {
         exit = playRound();
     }
-
+    //Check if a player has won after each round
     if (hasPlayerWon())
     {
+        //Game is a draw
         if (players[0]->getScore() == players[1]->getScore())
         {
+            //Print results
             menu->gameOver(players[0]->getName(), players[1]->getName(), players[0]->getScore());
         }
+        //Set pointer to winning player
         else
         {
             Player *winningPlayer = playerTurnID;
@@ -66,6 +71,7 @@ bool GameEngine::playGame()
                     winningPlayer = player;
                 }
             }
+            //Print results
             menu->gameOver(winningPlayer);
         }
     }
@@ -74,8 +80,10 @@ bool GameEngine::playGame()
 
 bool GameEngine::playRound()
 {
+    //Track whether all tiles have been drawn
     if (roundOver())
     {
+        //Return FP tile to center
         centerPile.push_back(FIRSTPLAYER);
         for (int i = 0; i < NUM_FACTORIES; i++)
         {
@@ -94,14 +102,18 @@ bool GameEngine::playRound()
 
                 temp[j] = bag->removeFront();
             }
-
+            //Refill factories
             factories[i]->fill(temp);
         }
     }
+
     bool exit = false;
+
     menu->printMessage("=== Start Round ===");
+
     while (!exit && !roundOver())
     {
+        //Print player turn GUI
         menu->handStart(playerTurnID->getName());
         menu->printFactory(&centerPile);
         for (int i = 0; i < NUM_FACTORIES; i++)
@@ -110,7 +122,10 @@ bool GameEngine::playRound()
         }
         menu->printMosaic(playerTurnID);
 
+        //Bool to check whether input command has been executed
         bool inputDone = false;
+
+        //Handle user input
         do
         {
             std::stringstream ss(menu->getInput());
@@ -131,21 +146,25 @@ bool GameEngine::playRound()
                     TileType tileType = charToTileType(colour);
                     --lineNum;
 
+                    //Error checking with helpful messages
                     if (validFactoryNum(factoryNum))
                     {
                         if (selectableTile(colour))
                         {
                             if (validLineNum(lineNum))
                             {
+                                //If drawing from center pile
                                 if (factoryNum == 0)
                                 {
                                     if (!centerPile.empty() && centerPileContains(tileType))
                                     {
+                                        //If moving tiles straight to broken line
                                         if (lineNum == 5)
                                         {
                                             playerTurnID->getMosaic()->addToBrokenTiles(drawFromCenter(tileType), tileType);
                                             inputDone = true;
                                         }
+                                        //If moving tiles to pattern line
                                         else if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
                                                  playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                         {
@@ -162,13 +181,16 @@ bool GameEngine::playRound()
                                     else
                                         errorMessage = "Center pile does not contain specified tile";
                                 }
+                                //If drawing from factory
                                 else
                                 {
+                                    //-1 from factory num input as index starts at 0
                                     --factoryNum;
                                     if (!factories[factoryNum]->isEmpty())
                                     {
                                         if (factories[factoryNum]->contains(tileType))
                                         {
+                                            //if Adding straight to broken tiles
                                             if (lineNum == 5)
                                             {
                                                 playerTurnID->getMosaic()->addToBrokenTiles(factories[factoryNum]->draw(tileType), tileType);
@@ -178,6 +200,7 @@ bool GameEngine::playRound()
                                                 }
                                                 inputDone = true;
                                             }
+                                            //Adding to pattern line
                                             else if (!playerTurnID->getMosaic()->isFilled(lineNum, tileType) &&
                                                      playerTurnID->getMosaic()->getLine(lineNum)->canAddTiles(tileType))
                                             {
@@ -200,8 +223,10 @@ bool GameEngine::playRound()
                                         errorMessage = "Selected factory is empty";
                                 }
 
+                                // If the input has been executed
                                 if (inputDone)
                                 {
+                                    //Change player turn
                                     changePlayerTurn();
                                     menu->printMessage("Turn successful.");
                                 }
@@ -215,6 +240,7 @@ bool GameEngine::playRound()
                     else
                         errorMessage = "Invalid factory number";
                 }
+                // Command to save game to file
                 else if (command == "save")
                 {
                     errorMessage = "Invalid syntax for save command";
@@ -344,6 +370,7 @@ int GameEngine::drawFromCenter(TileType colour)
     std::vector<int> remove;
     int decrement = 0;
 
+    //Loop through vector saving indexes of tiles to be erased
     for (int i = 0; i < (int)centerPile.size(); i++)
     {
         if (centerPile[i] == colour)
@@ -352,9 +379,12 @@ int GameEngine::drawFromCenter(TileType colour)
             remove.push_back(i);
         }
     }
+    //Loop through indexes
     for (int i = 0; i < (int)remove.size(); i++)
     {
+        // erase element at index
         centerPile.erase(centerPile.begin() + (remove[i] - decrement));
+        // Reduce all future indexes by 1
         decrement++;
     }
     return count;

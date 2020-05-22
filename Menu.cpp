@@ -18,12 +18,6 @@ std::string Menu::getInput()
     std::cout << input << std::endl;
     return input;
 }
-void Menu::printRound(bool playerTurn, Factory factories[])
-{
-}
-void Menu::printPlayer(Player player)
-{
-}
 void Menu::printCredits()
 {
     std::cout << std::endl

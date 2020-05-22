@@ -16,20 +16,33 @@ using std::string;
 class GameEngine
 {
 public:
+    //Constructor
     GameEngine(Menu *menu);
+    //Destructor
     ~GameEngine();
+    //Fill bag with seed and call playGame()
     bool playGame(char const *argv);
+    //Play game
     bool playGame();
+    //Play a single round
     bool playRound();
+    //Add a new player
     Player *addPlayer(string name);
+    //Add an existing player from save
     Player *addPlayer(std::string name, int score, Mosaic *mosaic);
+    //Helper method for new game
     void addPlayers();
-
+    //Fill bag using seed
     void fillBag(int argc, char **argv);
+    //Import already filled bag
     void fillBag(TileList *bag);
+    //Import already filled lid
     void fillLid(TileList *lid);
+    //Fill center pile with tiles from vector
     void fillCenterPile(std::vector<TileType> centerPile);
+    //Draw tiles from bag and fill factories
     void fillFactories(Factory *factories[]);
+    //Set a pointer to the player whose turn it is
     void setPlayerTurn(int playerIndex);
 
     // Getters
